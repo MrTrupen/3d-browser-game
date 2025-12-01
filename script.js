@@ -56,14 +56,14 @@ var world = document.getElementById("world");
 
 function update() {
   //count movement
-  dx = PressLeft - PressRight;
-  dy = PressForward - PressBack;
-  dz = PressUp;
+  dx = PressRight - PressLeft;
+  dz = -(PressForward - PressBack);
+  dy = PressUp;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
-  pawn.z = pawn.y + dy;
-  pawn.y = pawn.z + dz;
+  pawn.y = pawn.y + dy;
+  pawn.z = pawn.z + dz;
 
   //change coordinates of the world
   world.style.transform =
