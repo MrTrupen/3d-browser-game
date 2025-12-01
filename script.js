@@ -62,8 +62,8 @@ function update() {
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
-  pawn.y = pawn.y + dy;
-  pawn.z = pawn.z + dz;
+  pawn.z = pawn.y + dy;
+  pawn.y = pawn.z + dz;
 
   //change coordinates of the world
   world.style.transform =
