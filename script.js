@@ -27,7 +27,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key == "a") {
     PressLeft = 1;
   }
-  if (event.key == "32") {
+  if (event.keyCode == "32") {
     PressUp = 1;
   }
 });
@@ -46,7 +46,7 @@ document.addEventListener("keyup", (event) => {
   if (event.key == "a") {
     PressLeft = 0;
   }
-  if (event.key == "32") {
+  if (event.keyCode == "32") {
     PressUp = 0;
   }
 });
@@ -56,9 +56,9 @@ var world = document.getElementById("world");
 
 function update() {
   //count movement
-  dx = PressRight - PressLeft;
-  dz = PressForward - PressBack;
-  dy = PressUp;
+  dx = PressLeft - PressRight;
+  dy = PressForward - PressBack;
+  dz = PressUp;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
@@ -67,7 +67,7 @@ function update() {
 
   //change coordinates of the world
   world.style.transform =
-    "translate3d(" + pawn.x + "px," + pawn.y + "px," + pawn.z + "px)";
+    "translate3d(" + -pawn.x + "px," + -pawn.y + "px," + -pawn.z + "px)";
 }
 
 TimerGame = setInterval(update, 10);
