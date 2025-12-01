@@ -8,6 +8,7 @@
 
 #world{
     position: absolute;
+
     width: inherit;
     height: inherit;
     transform-style: preserve-3d;
@@ -18,5 +19,7 @@
     width: 200px;
     height: 200px;
     background-color: #F000F0;
-    transform: rotateY(30deg)
+    transform: translate(-50%,-50%) rotateY(30deg);
+    top:400px;
+    left:400px;
 }
