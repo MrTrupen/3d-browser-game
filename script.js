@@ -27,7 +27,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key == "a") {
     PressLeft = 1;
   }
-  if (event.keyCode == "32") {
+  if (event.key == " ") {
     PressUp = 1;
   }
 });
@@ -46,7 +46,7 @@ document.addEventListener("keyup", (event) => {
   if (event.key == "a") {
     PressLeft = 0;
   }
-  if (event.keyCode == "32") {
+  if (event.key == " ") {
     PressUp = 0;
   }
 });
