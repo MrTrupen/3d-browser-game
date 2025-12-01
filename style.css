@@ -1,25 +1,24 @@
-#container{
-    position: absolute;
-    width: 1200px;
-    height: 800px;
-    border: 2px solid #000000;
-    perspective: 600px;
+#container {
+  position: absolute;
+  width: 1200px;
+  height: 800px;
+  border: 2px solid #000000;
+  perspective: 600px;
 }
 
-#world{
-    position: absolute;
-
-    width: inherit;
-    height: inherit;
-    transform-style: preserve-3d;
+#world {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  transform-style: preserve-3d;
 }
 
-#square1{
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background-color: #F000F0;
-    transform: translate(-50%,-50%) rotateY(30deg);
-    top:400px;
-    left:400px;
+#square1 {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-color: #f000f0;
+  transform: translate(-50%, -50%) rotateY(30deg);
+  top: 400px;
+  left: 400px;
 }
