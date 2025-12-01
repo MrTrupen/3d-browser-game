@@ -23,3 +23,22 @@ document.addEventListener("keydown", (event) => {
     PressUp = 1;
   }
 });
+
+// if the key is released
+document.addEventListener("keyup", (event) => {
+  if (event.key == "w") {
+    PressForward = 0;
+  }
+  if (event.key == "s") {
+    PressBack = 0;
+  }
+  if (event.key == "d") {
+    PressRight = 0;
+  }
+  if (event.key == "a") {
+    PressLeft = 0;
+  }
+  if (event.key == "32") {
+    PressUp = 0;
+  }
+});
