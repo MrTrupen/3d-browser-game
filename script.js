@@ -16,13 +16,26 @@ var PressUp = 0;
 // Variables for mouse
 let MouseX = 0;
 let MouseY = 0;
+let lock = false;
 
 // Variable for HTML objects
 var world = document.getElementById("world");
 var container = document.getElementById("container");
+
+// Mouse locking
 container.onclick = function () {
-  container.requestPointerLock();
+  if (!lock) {
+    container.requestPointerLock();
+  } else {
+    document.exitPointerLock(); // Use document for exit
+  }
 };
+
+// Listen for pointer lock change
+document.addEventListener("pointerlockchange", (event) => {
+  // Update lock status based on pointerLockElement
+  lock = document.pointerLockElement === container;
+});
 
 //if the key is pressed
 document.addEventListener("keydown", (event) => {
@@ -87,8 +100,11 @@ function update() {
   pawn.x = pawn.x + dx;
   pawn.y = Math.min(0, pawn.y + dy);
   pawn.z = pawn.z + dz;
-  pawn.rx = pawn.rx + drx;
-  pawn.ry = pawn.ry + dry;
+
+  if (lock) {
+    pawn.rx = pawn.rx + drx;
+    pawn.ry = pawn.ry + dry;
+  }
 
   //change coordinates of the world
   world.style.transform =
