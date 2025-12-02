@@ -9,3 +9,6 @@ const KEY_BACK = ["s", "ArrowDown"];
 const KEY_LEFT = ["a", "ArrowLeft"];
 const KEY_RIGHT = ["d", "ArrowRight"];
 const KEY_JUMP = [" "]; // spacebar
+
+// Math
+const DEG = Math.PI / 180;

@@ -66,8 +66,13 @@ var world = document.getElementById("world");
 
 function update() {
   //count movement
-  let dx = (PressRight - PressLeft) * MOVE_SPEED;
-  let dz = -(PressForward - PressBack) * MOVE_SPEED;
+  let dx =
+    Math.cos(pawn.ry * DEG) * ((PressRight - PressLeft) * MOVE_SPEED) -
+    Math.sin(pawn.ry * DEG) * ((PressForward - PressBack) * MOVE_SPEED);
+  let dz = -(
+    Math.sin(pawn.ry * DEG) * ((PressRight - PressLeft) * MOVE_SPEED) +
+    Math.cos(pawn.ry * DEG) * ((PressForward - PressBack) * MOVE_SPEED)
+  );
   let dy = -PressUp * JUMP_SPEED;
   let drx = MouseY;
   let dry = -MouseX;
