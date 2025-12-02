@@ -58,7 +58,7 @@ function update() {
   //count movement
   dx = PressRight - PressLeft;
   dz = -(PressForward - PressBack);
-  dy = PressUp;
+  dy = -PressUp;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
