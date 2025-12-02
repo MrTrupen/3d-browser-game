@@ -56,9 +56,9 @@ var world = document.getElementById("world");
 
 function update() {
   //count movement
-  dx = PressRight - PressLeft;
-  dz = -(PressForward - PressBack);
-  dy = -PressUp;
+  let dx = (PressRight - PressLeft) * MOVE_SPEED;
+  let dz = -(PressForward - PressBack) * MOVE_SPEED;
+  let dy = -PressUp * JUMP_SPEED;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
@@ -70,4 +70,4 @@ function update() {
     "translate3d(" + -pawn.x + "px," + -pawn.y + "px," + -pawn.z + "px)";
 }
 
-TimerGame = setInterval(update, 10);
+TimerGame = setInterval(update, UPDATE_INTERVAL);
