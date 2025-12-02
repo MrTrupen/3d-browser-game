@@ -13,6 +13,10 @@ var PressForward = 0;
 var PressBack = 0;
 var PressUp = 0;
 
+// Variables for mouse
+let MouseX = 0;
+let MouseY = 0;
+
 //if the key is pressed
 document.addEventListener("keydown", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
@@ -51,6 +55,12 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
+// Mouse movement listener
+document.addEventListener("mousemove", (event) => {
+  MouseX = event.movementX;
+  MouseY = event.movementY;
+});
+
 var pawn = new player(0, 0, 0, 0, 0);
 var world = document.getElementById("world");
 
@@ -59,15 +69,29 @@ function update() {
   let dx = (PressRight - PressLeft) * MOVE_SPEED;
   let dz = -(PressForward - PressBack) * MOVE_SPEED;
   let dy = -PressUp * JUMP_SPEED;
+  let drx = MouseY;
+  let dry = MouseX;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
   pawn.y = pawn.y + dy;
   pawn.z = pawn.z + dz;
+  pawn.rx = pawn.rx + drx;
+  pawn.ry = pawn.ry + dry;
 
   //change coordinates of the world
   world.style.transform =
-    "translate3d(" + -pawn.x + "px," + -pawn.y + "px," + -pawn.z + "px)";
+    "rotateX(" +
+    -pawn.rx +
+    "deg) rotateY(" +
+    -pawn.ry +
+    "deg) translate3d(" +
+    -pawn.x +
+    "px," +
+    -pawn.y +
+    "px," +
+    -pawn.z +
+    "px)";
 }
 
 TimerGame = setInterval(update, UPDATE_INTERVAL);
