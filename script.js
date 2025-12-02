@@ -13,6 +13,30 @@ var PressForward = 0;
 var PressBack = 0;
 var PressUp = 0;
 
+// Variables for mouse
+let MouseX = 0;
+let MouseY = 0;
+let lock = false;
+
+// Variable for HTML objects
+var world = document.getElementById("world");
+var container = document.getElementById("container");
+
+// Mouse locking
+container.onclick = function () {
+  if (!lock) {
+    container.requestPointerLock();
+  } else {
+    document.exitPointerLock(); // Use document for exit
+  }
+};
+
+// Listen for pointer lock change
+document.addEventListener("pointerlockchange", (event) => {
+  // Update lock status based on pointerLockElement
+  lock = document.pointerLockElement === container;
+});
+
 //if the key is pressed
 document.addEventListener("keydown", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
@@ -47,27 +71,58 @@ document.addEventListener("keyup", (event) => {
     PressLeft = 0;
   }
   if (KEY_JUMP.includes(event.key)) {
-    PressUp = 0;
+    PressUp = -GRAVITY;
   }
 });
 
+// Mouse movement listener
+document.addEventListener("mousemove", (event) => {
+  MouseX = event.movementX;
+  MouseY = event.movementY;
+});
+
 var pawn = new player(0, 0, 0, 0, 0);
-var world = document.getElementById("world");
 
 function update() {
   //count movement
-  let dx = (PressRight - PressLeft) * MOVE_SPEED;
-  let dz = -(PressForward - PressBack) * MOVE_SPEED;
+  let dx =
+    Math.cos(pawn.ry * DEG) * ((PressRight - PressLeft) * MOVE_SPEED) -
+    Math.sin(pawn.ry * DEG) * ((PressForward - PressBack) * MOVE_SPEED);
+  let dz = -(
+    Math.sin(pawn.ry * DEG) * ((PressRight - PressLeft) * MOVE_SPEED) +
+    Math.cos(pawn.ry * DEG) * ((PressForward - PressBack) * MOVE_SPEED)
+  );
   let dy = -PressUp * JUMP_SPEED;
+  let drx = MouseY;
+  let dry = -MouseX;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
-  pawn.y = pawn.y + dy;
+  pawn.y = Math.min(0, pawn.y + dy);
   pawn.z = pawn.z + dz;
+
+  if (lock) {
+    pawn.rx = pawn.rx + drx;
+    pawn.ry = pawn.ry + dry;
+  }
 
   //change coordinates of the world
   world.style.transform =
-    "translate3d(" + -pawn.x + "px," + -pawn.y + "px," + -pawn.z + "px)";
+    "translateZ(600px)" +
+    "rotateX(" +
+    -pawn.rx +
+    "deg) rotateY(" +
+    -pawn.ry +
+    "deg) translate3d(" +
+    -pawn.x +
+    "px," +
+    -pawn.y +
+    "px," +
+    -pawn.z +
+    "px)";
+
+  MouseX = 0;
+  MouseY = 0;
 }
 
 TimerGame = setInterval(update, UPDATE_INTERVAL);

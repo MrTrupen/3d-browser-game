@@ -23,3 +23,23 @@
   top: 400px;
   left: 400px;
 }
+
+#square2 {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-color: #0000f0;
+  transform: translate(-50%, -50%) rotateY(-30deg);
+  top: 400px;
+  left: 650px;
+}
+
+#ground {
+  position: absolute;
+  width: 1700px;
+  height: 1700px;
+  background-color: #f0f0f0;
+  transform: translate(-50%, -50%) rotateX(90deg);
+  top: 500px;
+  left: 400px;
+}
