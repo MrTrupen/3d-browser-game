@@ -15,38 +15,38 @@ var PressUp = 0;
 
 //if the key is pressed
 document.addEventListener("keydown", (event) => {
-  if (event.key == "w") {
+  if (KEY_FORWARD.includes(event.key)) {
     PressForward = 1;
   }
-  if (event.key == "s") {
+  if (KEY_BACK.includes(event.key)) {
     PressBack = 1;
   }
-  if (event.key == "d") {
+  if (KEY_RIGHT.includes(event.key)) {
     PressRight = 1;
   }
-  if (event.key == "a") {
+  if (KEY_LEFT.includes(event.key)) {
     PressLeft = 1;
   }
-  if (event.key == " ") {
+  if (KEY_JUMP.includes(event.key)) {
     PressUp = 1;
   }
 });
 
 // if the key is released
 document.addEventListener("keyup", (event) => {
-  if (event.key == "w") {
+  if (KEY_FORWARD.includes(event.key)) {
     PressForward = 0;
   }
-  if (event.key == "s") {
+  if (KEY_BACK.includes(event.key)) {
     PressBack = 0;
   }
-  if (event.key == "d") {
+  if (KEY_RIGHT.includes(event.key)) {
     PressRight = 0;
   }
-  if (event.key == "a") {
+  if (KEY_LEFT.includes(event.key)) {
     PressLeft = 0;
   }
-  if (event.key == " ") {
+  if (KEY_JUMP.includes(event.key)) {
     PressUp = 0;
   }
 });
