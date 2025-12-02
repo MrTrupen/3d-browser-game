@@ -70,7 +70,7 @@ function update() {
   let dz = -(PressForward - PressBack) * MOVE_SPEED;
   let dy = -PressUp * JUMP_SPEED;
   let drx = MouseY;
-  let dry = MouseX;
+  let dry = -MouseX;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
@@ -81,6 +81,7 @@ function update() {
 
   //change coordinates of the world
   world.style.transform =
+    "translateZ(600px)" +
     "rotateX(" +
     -pawn.rx +
     "deg) rotateY(" +
