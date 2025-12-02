@@ -51,7 +51,7 @@ document.addEventListener("keyup", (event) => {
     PressLeft = 0;
   }
   if (KEY_JUMP.includes(event.key)) {
-    PressUp = 0;
+    PressUp = -GRAVITY;
   }
 });
 
@@ -79,7 +79,7 @@ function update() {
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
-  pawn.y = pawn.y + dy;
+  pawn.y = Math.min(0, pawn.y + dy);
   pawn.z = pawn.z + dz;
   pawn.rx = pawn.rx + drx;
   pawn.ry = pawn.ry + dry;
