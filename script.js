@@ -92,6 +92,9 @@ function update() {
     "px," +
     -pawn.z +
     "px)";
+
+  MouseX = 0;
+  MouseY = 0;
 }
 
 TimerGame = setInterval(update, UPDATE_INTERVAL);
