@@ -17,6 +17,13 @@ var PressUp = 0;
 let MouseX = 0;
 let MouseY = 0;
 
+// Variable for HTML objects
+var world = document.getElementById("world");
+var container = document.getElementById("container");
+container.onclick = function () {
+  container.requestPointerLock();
+};
+
 //if the key is pressed
 document.addEventListener("keydown", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
@@ -62,7 +69,6 @@ document.addEventListener("mousemove", (event) => {
 });
 
 var pawn = new player(0, 0, 0, 0, 0);
-var world = document.getElementById("world");
 
 function update() {
   //count movement
