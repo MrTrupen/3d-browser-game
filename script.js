@@ -77,8 +77,8 @@ document.addEventListener("keyup", (event) => {
 
 // Mouse movement listener
 document.addEventListener("mousemove", (event) => {
-  MouseX = event.movementX;
-  MouseY = event.movementY;
+  MouseX = event.movementX * MOUSE_SPEED;
+  MouseY = event.movementY * MOUSE_SPEED;
 });
 
 var pawn = new player(0, 0, 0, 0, 0);

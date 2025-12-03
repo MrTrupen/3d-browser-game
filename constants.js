@@ -3,6 +3,7 @@ const MOVE_SPEED = 1; // units per update for horizontal movement
 const JUMP_SPEED = 2; // units per update for upward movement
 const UPDATE_INTERVAL = 10; // ms between game updates
 const GRAVITY = 1;
+const MOUSE_SPEED = 0.4;
 
 // Key binding constants
 const KEY_FORWARD = ["w", "ArrowUp"];
