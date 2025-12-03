@@ -8,11 +8,12 @@ function player(x, y, z, rx, ry) {
 
 // Rectangle Array
 var map = [
-  [0, 0, -1000, 0, 0, 0, 2000, 200, "wall"],
-  [0, 0, 1000, 0, 0, 0, 2000, 200, "wall"],
-  [1000, 0, 0, 0, 90, 0, 2000, 200, "wall"],
-  [-1000, 0, 0, 0, -90, 0, 2000, 200, "wall"],
-  [0, 100, 0, 90, 0, 0, 2000, 2000, "ground"],
+  [0, 0, -1000, 0, 0, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // front walls
+  [0, 0, 1000, 0, 0, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // back wall
+  [1000, 0, 0, 0, 90, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // right wall
+  [-1000, 0, 0, 0, -90, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // left wall
+  [0, 100, 0, 90, 0, 0, 2000, 2000, "url('Patterns/tiles.jpg')"], // ground
+  [0, 0, -1000, 0, 0, 0, 83, 180, "url('Patterns/door.png')"], // door
 ];
 
 //Variables for movement
@@ -144,13 +145,7 @@ function CreateNewWorld() {
     newElement.style.height = map[i][7] + "px";
 
     // Apply textures based on surface type
-    if (map[i][8] === "wall") {
-      newElement.style.backgroundImage = "url('Patterns/hedge.jpg')";
-      newElement.style.backgroundSize = "300px 300px";
-    } else if (map[i][8] === "ground") {
-      newElement.style.backgroundImage = "url('Patterns/tiles.jpg')";
-      newElement.style.backgroundSize = "100px 100px";
-    }
+    newElement.style.backgroundImage = map[i][8];
 
     newElement.style.transform =
       "translate3d(" +
