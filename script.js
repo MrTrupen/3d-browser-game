@@ -6,6 +6,15 @@ function player(x, y, z, rx, ry) {
   this.ry = ry;
 }
 
+// Rectangle Array
+var map = [
+  [0, 0, -1000, 0, 0, 0, 2000, 200, "#F0C0FF"],
+  [0, 0, 1000, 0, 0, 0, 2000, 200, "#F0C0FF"],
+  [1000, 0, 0, 0, 90, 0, 2000, 200, "#F0C0FF"],
+  [-1000, 0, 0, 0, -90, 0, 2000, 200, "#F0C0FF"],
+  [0, 100, 0, 90, 0, 0, 2000, 2000, "#adadadff"],
+];
+
 //Variables for movement
 var PressLeft = 0;
 var PressRight = 0;

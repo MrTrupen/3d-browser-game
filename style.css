@@ -14,12 +14,6 @@
   transform-style: preserve-3d;
 }
 
-#ground {
+.square {
   position: absolute;
-  width: 1700px;
-  height: 1700px;
-  background-color: #f0f0f0;
-  transform: translate(-50%, -50%) rotateX(90deg);
-  top: 500px;
-  left: 400px;
 }
