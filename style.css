@@ -14,26 +14,6 @@
   transform-style: preserve-3d;
 }
 
-#square1 {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background-color: #f000f0;
-  transform: translate(-50%, -50%) rotateY(30deg);
-  top: 400px;
-  left: 400px;
-}
-
-#square2 {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  background-color: #0000f0;
-  transform: translate(-50%, -50%) rotateY(-30deg);
-  top: 400px;
-  left: 650px;
-}
-
 #ground {
   position: absolute;
   width: 1700px;
