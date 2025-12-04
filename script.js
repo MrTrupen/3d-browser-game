@@ -1,9 +1,11 @@
-function player(x, y, z, rotation_x, rotation_y) {
-  this.x = x;
-  this.y = y;
-  this.z = z;
-  this.rotation_x = rotation_x;
-  this.rotation_y = rotation_y;
+class player {
+  constructor(x, y, z, rotation_x, rotation_y) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    this.rotation_x = rotation_x;
+    this.rotation_y = rotation_y;
+  }
 }
 
 //Variables for movement
