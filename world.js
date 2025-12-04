@@ -16,4 +16,4 @@ let boundries = [
   new rectangle(0, 100, 0, 90, 0, 0, 2000, 2000, "url('Patterns/tiles.jpg')"), // ground
 ];
 
-let objects = [boundries, spawn_cube];
+let objects = [boundries, generate_maze(10, 200)];
