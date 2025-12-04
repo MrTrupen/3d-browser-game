@@ -1,9 +1,9 @@
-function player(x, y, z, rx, ry) {
+function player(x, y, z, rotation_x, rotation_y) {
   this.x = x;
   this.y = y;
   this.z = z;
-  this.rx = rx;
-  this.ry = ry;
+  this.rotation_x = rotation_x;
+  this.rotation_y = rotation_y;
 }
 
 // Rectangle Array
@@ -25,16 +25,16 @@ var map = [
 ];
 
 //Variables for movement
-var PressLeft = 0;
-var PressRight = 0;
-var PressForward = 0;
-var PressBack = 0;
-var PressUp = 0;
+var press_left = 0;
+var press_right = 0;
+var press_forward = 0;
+var press_back = 0;
+var press_up = 0;
 
 // Variables for mouse
-let MouseX = 0;
-let MouseY = 0;
-let lock = false;
+let mouse_x = 0;
+let mouse_y = 0;
+let is_mouse_locked = false;
 
 // Variable for HTML objects
 var world = document.getElementById("world");
@@ -42,7 +42,7 @@ var container = document.getElementById("container");
 
 // Mouse locking
 container.onclick = function () {
-  if (!lock) {
+  if (!is_mouse_locked) {
     container.requestPointerLock();
   } else {
     document.exitPointerLock(); // Use document for exit
@@ -52,51 +52,51 @@ container.onclick = function () {
 // Listen for pointer lock change
 document.addEventListener("pointerlockchange", (event) => {
   // Update lock status based on pointerLockElement
-  lock = document.pointerLockElement === container;
+  is_mouse_locked = document.pointerLockElement === container;
 });
 
 //if the key is pressed
 document.addEventListener("keydown", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
-    PressForward = 1;
+    press_forward = 1;
   }
   if (KEY_BACK.includes(event.key)) {
-    PressBack = 1;
+    press_back = 1;
   }
   if (KEY_RIGHT.includes(event.key)) {
-    PressRight = 1;
+    press_right = 1;
   }
   if (KEY_LEFT.includes(event.key)) {
-    PressLeft = 1;
+    press_left = 1;
   }
   if (KEY_JUMP.includes(event.key)) {
-    PressUp = 1;
+    press_up = 1;
   }
 });
 
 // if the key is released
 document.addEventListener("keyup", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
-    PressForward = 0;
+    press_forward = 0;
   }
   if (KEY_BACK.includes(event.key)) {
-    PressBack = 0;
+    press_back = 0;
   }
   if (KEY_RIGHT.includes(event.key)) {
-    PressRight = 0;
+    press_right = 0;
   }
   if (KEY_LEFT.includes(event.key)) {
-    PressLeft = 0;
+    press_left = 0;
   }
   if (KEY_JUMP.includes(event.key)) {
-    PressUp = -GRAVITY;
+    press_up = -GRAVITY;
   }
 });
 
 // Mouse movement listener
 document.addEventListener("mousemove", (event) => {
-  MouseX = event.movementX * MOUSE_SPEED;
-  MouseY = event.movementY * MOUSE_SPEED;
+  mouse_x = event.movementX * MOUSE_SPEED;
+  mouse_y = event.movementY * MOUSE_SPEED;
 });
 
 var pawn = new player(0, 0, 0, 0, 0);
@@ -104,33 +104,37 @@ var pawn = new player(0, 0, 0, 0, 0);
 function update() {
   //count movement
   let dx =
-    Math.cos(pawn.ry * DEG) * ((PressRight - PressLeft) * MOVE_SPEED) -
-    Math.sin(pawn.ry * DEG) * ((PressForward - PressBack) * MOVE_SPEED);
+    Math.cos(pawn.rotation_y * DEG) *
+      ((press_right - press_left) * MOVE_SPEED) -
+    Math.sin(pawn.rotation_y * DEG) *
+      ((press_forward - press_back) * MOVE_SPEED);
   let dz = -(
-    Math.sin(pawn.ry * DEG) * ((PressRight - PressLeft) * MOVE_SPEED) +
-    Math.cos(pawn.ry * DEG) * ((PressForward - PressBack) * MOVE_SPEED)
+    Math.sin(pawn.rotation_y * DEG) *
+      ((press_right - press_left) * MOVE_SPEED) +
+    Math.cos(pawn.rotation_y * DEG) *
+      ((press_forward - press_back) * MOVE_SPEED)
   );
-  let dy = -PressUp * JUMP_SPEED;
-  let drx = MouseY;
-  let dry = -MouseX;
+  let dy = -press_up * JUMP_SPEED;
+  let drx = mouse_y;
+  let dry = -mouse_x;
 
   //add movement to the coordinates
   pawn.x = pawn.x + dx;
   pawn.y = Math.min(0, pawn.y + dy);
   pawn.z = pawn.z + dz;
 
-  if (lock) {
-    pawn.rx = pawn.rx + drx;
-    pawn.ry = pawn.ry + dry;
+  if (is_mouse_locked) {
+    pawn.rotation_x = pawn.rotation_x + drx;
+    pawn.rotation_y = pawn.rotation_y + dry;
   }
 
   //change coordinates of the world
   world.style.transform =
     "translateZ(600px)" +
     "rotateX(" +
-    -pawn.rx +
+    -pawn.rotation_x +
     "deg) rotateY(" +
-    -pawn.ry +
+    -pawn.rotation_y +
     "deg) translate3d(" +
     -pawn.x +
     "px," +
@@ -139,11 +143,11 @@ function update() {
     -pawn.z +
     "px)";
 
-  MouseX = 0;
-  MouseY = 0;
+  mouse_x = 0;
+  mouse_y = 0;
 }
 
-function CreateNewWorld() {
+function create_new_world() {
   for (let i = 0; i < map.length; i++) {
     //create rectangles and styles
     let newElement = document.createElement("div");
@@ -176,6 +180,6 @@ function CreateNewWorld() {
 }
 
 // Generate the world
-CreateNewWorld();
+create_new_world();
 
 TimerGame = setInterval(update, UPDATE_INTERVAL);
