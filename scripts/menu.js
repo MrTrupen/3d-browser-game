@@ -6,6 +6,13 @@ let button2 = document.getElementById("button2");
 let button3 = document.getElementById("button3");
 
 // create navigation
+button1.onclick = function () {
+  menu1.style.display = "none";
+  menu2.style.display = "none";
+  can_lock = true;
+};
+
+// create navigation
 button2.onclick = function () {
   menu1.style.display = "none";
   menu2.style.display = "block";
