@@ -12,6 +12,7 @@ var press_right = 0;
 var press_forward = 0;
 var press_back = 0;
 var press_up = 0;
+var press_sprint = 1;
 
 // Variables for mouse
 let mouse_x = 0;
@@ -54,6 +55,9 @@ document.addEventListener("keydown", (event) => {
   if (KEY_JUMP.includes(event.key)) {
     press_up = 1;
   }
+  if (KEY_SPRINT.includes(event.key)) {
+    press_sprint = SPRINT_SPEED;
+  }
 });
 
 // if the key is released
@@ -73,6 +77,9 @@ document.addEventListener("keyup", (event) => {
   if (KEY_JUMP.includes(event.key)) {
     press_up = -GRAVITY;
   }
+  if (KEY_SPRINT.includes(event.key)) {
+    press_sprint = 1;
+  }
 });
 
 // Mouse movement listener
@@ -87,14 +94,14 @@ function update() {
   //count movement
   let dx =
     Math.cos(pawn.rotation_y * DEG) *
-      ((press_right - press_left) * MOVE_SPEED) -
+      ((press_right - press_left) * MOVE_SPEED * press_sprint) -
     Math.sin(pawn.rotation_y * DEG) *
-      ((press_forward - press_back) * MOVE_SPEED);
+      ((press_forward - press_back) * MOVE_SPEED * press_sprint);
   let dz = -(
     Math.sin(pawn.rotation_y * DEG) *
-      ((press_right - press_left) * MOVE_SPEED) +
+      ((press_right - press_left) * MOVE_SPEED * press_sprint) +
     Math.cos(pawn.rotation_y * DEG) *
-      ((press_forward - press_back) * MOVE_SPEED)
+      ((press_forward - press_back) * MOVE_SPEED * press_sprint)
   );
   let dy = -press_up * JUMP_SPEED;
   let drx = mouse_y;
