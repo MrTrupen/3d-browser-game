@@ -126,34 +126,36 @@ function update() {
 }
 
 function create_new_world() {
-  for (let object_idx = 0; object_idx < map.length; object_idx++) {
-    //create rectangles and styles
-    let newElement = document.createElement("div");
-    newElement.className = "square";
-    newElement.id = "square_" + object_idx;
-    newElement.style.width = to_px(map[object_idx].width);
-    newElement.style.height = to_px(map[object_idx].height);
+  for (let array_idx = 0; array_idx < objects.length; array_idx++) {
+    for (let object_idx = 0; object_idx < objects[array_idx].length; object_idx++) {
+      //create rectangles and styles
+      let newElement = document.createElement("div");
+      newElement.className = "square";
+      newElement.id = "square_" + array_idx + "_" + object_idx;
+      newElement.style.width = to_px(objects[array_idx][object_idx].width);
+      newElement.style.height = to_px(objects[array_idx][object_idx].height);
 
-    // Apply textures based on surface type
-    newElement.style.backgroundImage = map[object_idx].pattern_path;
+      // Apply textures based on surface type
+      newElement.style.backgroundImage = objects[array_idx][object_idx].pattern_path;
 
-    newElement.style.transform =
-      "translate3d(" +
-      to_px(600 - map[object_idx].width / 2 + map[object_idx].x) +
-      "," +
-      to_px(400 - map[object_idx].height / 2 + map[object_idx].y) +
-      "," +
-      to_px(map[object_idx].z) +
-      ") rotateX(" +
-      map[object_idx].rotation_x +
-      "deg) rotateY(" +
-      map[object_idx].rotation_y +
-      "deg) rotateZ(" +
-      map[object_idx].rotation_z +
-      "deg)";
+      newElement.style.transform =
+        "translate3d(" +
+        to_px(600 - objects[array_idx][object_idx].width / 2 + objects[array_idx][object_idx].x) +
+        "," +
+        to_px(400 - objects[array_idx][object_idx].height / 2 + objects[array_idx][object_idx].y) +
+        "," +
+        to_px(objects[array_idx][object_idx].z) +
+        ") rotateX(" +
+        objects[array_idx][object_idx].rotation_x +
+        "deg) rotateY(" +
+        objects[array_idx][object_idx].rotation_y +
+        "deg) rotateZ(" +
+        objects[array_idx][object_idx].rotation_z +
+        "deg)";
 
-    //insert rectangles into the world
-    world.append(newElement);
+      //insert rectangles into the world
+      world.append(newElement);
+    }
   }
 }
 
