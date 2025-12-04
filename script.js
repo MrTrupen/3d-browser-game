@@ -84,25 +84,26 @@ var pawn = new player(0, 0, 0, 0, 0);
 
 function update() {
   //count movement
-  let dx =
+  let difference_x =
     Math.cos(pawn.rotation_y * DEG) * ((press_right - press_left) * MOVE_SPEED * press_sprint) -
     Math.sin(pawn.rotation_y * DEG) * ((press_forward - press_back) * MOVE_SPEED * press_sprint);
-  let dz = -(
+  let difference_z = -(
     Math.sin(pawn.rotation_y * DEG) * ((press_right - press_left) * MOVE_SPEED * press_sprint) +
     Math.cos(pawn.rotation_y * DEG) * ((press_forward - press_back) * MOVE_SPEED * press_sprint)
   );
-  let dy = -press_up * JUMP_SPEED;
-  let drx = mouse_y;
-  let dry = -mouse_x;
+  let difference_y = -press_up * JUMP_SPEED;
+  let difference_rotation_x = mouse_y;
+  let difference_rotation_y = -mouse_x;
 
   //add movement to the coordinates
-  pawn.x = pawn.x + dx;
-  pawn.y = Math.min(0, pawn.y + dy);
-  pawn.z = pawn.z + dz;
+  pawn.x = pawn.x + difference_x;
+  pawn.y = Math.min(0, pawn.y + difference_y);
+  pawn.z = pawn.z + difference_z;
 
+  // rotate only when mouse is locked
   if (is_mouse_locked) {
-    pawn.rotation_x = pawn.rotation_x + drx;
-    pawn.rotation_y = pawn.rotation_y + dry;
+    pawn.rotation_x = pawn.rotation_x + difference_rotation_x;
+    pawn.rotation_y = pawn.rotation_y + difference_rotation_y;
   }
 
   //change coordinates of the world
@@ -125,30 +126,30 @@ function update() {
 }
 
 function create_new_world() {
-  for (let i = 0; i < map.length; i++) {
+  for (let object_idx = 0; object_idx < map.length; object_idx++) {
     //create rectangles and styles
     let newElement = document.createElement("div");
     newElement.className = "square";
-    newElement.id = "square" + i;
-    newElement.style.width = to_px(map[i].width);
-    newElement.style.height = to_px(map[i].height);
+    newElement.id = "square_" + object_idx;
+    newElement.style.width = to_px(map[object_idx].width);
+    newElement.style.height = to_px(map[object_idx].height);
 
     // Apply textures based on surface type
-    newElement.style.backgroundImage = map[i].pattern_path;
+    newElement.style.backgroundImage = map[object_idx].pattern_path;
 
     newElement.style.transform =
       "translate3d(" +
-      to_px(600 - map[i].width / 2 + map[i].x) +
+      to_px(600 - map[object_idx].width / 2 + map[object_idx].x) +
       "," +
-      to_px(400 - map[i].height / 2 + map[i].y) +
+      to_px(400 - map[object_idx].height / 2 + map[object_idx].y) +
       "," +
-      to_px(map[i].z) +
+      to_px(map[object_idx].z) +
       ") rotateX(" +
-      map[i].rotation_x +
+      map[object_idx].rotation_x +
       "deg) rotateY(" +
-      map[i].rotation_y +
+      map[object_idx].rotation_y +
       "deg) rotateZ(" +
-      map[i].rotation_z +
+      map[object_idx].rotation_z +
       "deg)";
 
     //insert rectangles into the world
