@@ -1,26 +1,3 @@
-class player {
-  constructor(x, y, z, rotation_x, rotation_y) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.rotation_x = rotation_x;
-    this.rotation_y = rotation_y;
-  }
-}
-class rectangle {
-  constructor(x, y, z, rotation_x, rotation_y, rotation_z, width, height, pattern_path) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.rotation_x = rotation_x;
-    this.rotation_y = rotation_y;
-    this.rotation_z = rotation_z;
-    this.width = width;
-    this.height = height;
-    this.pattern_path = pattern_path;
-  }
-}
-
 //Variables for movement
 var press_left = 0;
 var press_right = 0;
@@ -153,25 +130,25 @@ function create_new_world() {
     let newElement = document.createElement("div");
     newElement.className = "square";
     newElement.id = "square" + i;
-    newElement.style.width = to_px(map[i][6]);
-    newElement.style.height = to_px(map[i][7]);
+    newElement.style.width = to_px(map[i].width);
+    newElement.style.height = to_px(map[i].height);
 
     // Apply textures based on surface type
-    newElement.style.backgroundImage = map[i][8];
+    newElement.style.backgroundImage = map[i].pattern_path;
 
     newElement.style.transform =
       "translate3d(" +
-      to_px(600 - map[i][6] / 2 + map[i][0]) +
+      to_px(600 - map[i].width / 2 + map[i].x) +
       "," +
-      to_px(400 - map[i][7] / 2 + map[i][1]) +
+      to_px(400 - map[i].height / 2 + map[i].y) +
       "," +
-      to_px(map[i][2]) +
+      to_px(map[i].z) +
       ") rotateX(" +
-      map[i][3] +
+      map[i].rotation_x +
       "deg) rotateY(" +
-      map[i][4] +
+      map[i].rotation_y +
       "deg) rotateZ(" +
-      map[i][5] +
+      map[i].rotation_z +
       "deg)";
 
     //insert rectangles into the world
