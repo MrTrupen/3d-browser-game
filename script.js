@@ -6,6 +6,24 @@ function player(x, y, z, rx, ry) {
   this.ry = ry;
 }
 
+// Rectangle Array
+var map = [
+  [0, 0, -1000, 0, 0, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // front walls
+  [0, 0, 1000, 0, 0, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // back wall
+  [1000, 0, 0, 0, 90, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // right wall
+  [-1000, 0, 0, 0, -90, 0, 2000, 200, "url('Patterns/hedge.jpg')"], // left wall
+  [0, 100, 0, 90, 0, 0, 2000, 2000, "url('Patterns/tiles.jpg')"], // ground
+  [0, 0, -1000, 0, 0, 0, 83, 180, "url('Patterns/door.png')"], // door
+
+  // Test cube
+  [0, 0, -100, 0, 0, 0, 200, 200, "url('Patterns/hedge.jpg')"], // front walls
+  [0, 0, 100, 0, 0, 0, 200, 200, "url('Patterns/hedge.jpg')"], // back wall
+  [100, 0, 0, 0, 90, 0, 200, 200, "url('Patterns/hedge.jpg')"], // right wall
+  [-100, 0, 0, 0, -90, 0, 200, 200, "url('Patterns/hedge.jpg')"], // left wall
+  [0, 100, 0, 90, 0, 0, 200, 200, "url('Patterns/hedge.jpg')"], // top wall
+  [0, -100, 0, 90, 0, 0, 200, 200, "url('Patterns/hedge.jpg')"], // bottom wall
+];
+
 //Variables for movement
 var PressLeft = 0;
 var PressRight = 0;
@@ -77,8 +95,8 @@ document.addEventListener("keyup", (event) => {
 
 // Mouse movement listener
 document.addEventListener("mousemove", (event) => {
-  MouseX = event.movementX;
-  MouseY = event.movementY;
+  MouseX = event.movementX * MOUSE_SPEED;
+  MouseY = event.movementY * MOUSE_SPEED;
 });
 
 var pawn = new player(0, 0, 0, 0, 0);
@@ -124,5 +142,40 @@ function update() {
   MouseX = 0;
   MouseY = 0;
 }
+
+function CreateNewWorld() {
+  for (let i = 0; i < map.length; i++) {
+    //create rectangles and styles
+    let newElement = document.createElement("div");
+    newElement.className = "square";
+    newElement.id = "square" + i;
+    newElement.style.width = map[i][6] + "px";
+    newElement.style.height = map[i][7] + "px";
+
+    // Apply textures based on surface type
+    newElement.style.backgroundImage = map[i][8];
+
+    newElement.style.transform =
+      "translate3d(" +
+      (600 - map[i][6] / 2 + map[i][0]) +
+      "px," +
+      (400 - map[i][7] / 2 + map[i][1]) +
+      "px," +
+      map[i][2] +
+      "px) rotateX(" +
+      map[i][3] +
+      "deg) rotateY(" +
+      map[i][4] +
+      "deg) rotateZ(" +
+      map[i][5] +
+      "deg)";
+
+    //insert rectangles into the world
+    world.append(newElement);
+  }
+}
+
+// Generate the world
+CreateNewWorld();
 
 TimerGame = setInterval(update, UPDATE_INTERVAL);
