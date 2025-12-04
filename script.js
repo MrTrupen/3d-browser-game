@@ -8,17 +8,7 @@ class player {
   }
 }
 class rectangle {
-  constructor(
-    x,
-    y,
-    z,
-    rotation_x,
-    rotation_y,
-    rotation_z,
-    width,
-    height,
-    pattern_path
-  ) {
+  constructor(x, y, z, rotation_x, rotation_y, rotation_z, width, height, pattern_path) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -118,15 +108,11 @@ var pawn = new player(0, 0, 0, 0, 0);
 function update() {
   //count movement
   let dx =
-    Math.cos(pawn.rotation_y * DEG) *
-      ((press_right - press_left) * MOVE_SPEED * press_sprint) -
-    Math.sin(pawn.rotation_y * DEG) *
-      ((press_forward - press_back) * MOVE_SPEED * press_sprint);
+    Math.cos(pawn.rotation_y * DEG) * ((press_right - press_left) * MOVE_SPEED * press_sprint) -
+    Math.sin(pawn.rotation_y * DEG) * ((press_forward - press_back) * MOVE_SPEED * press_sprint);
   let dz = -(
-    Math.sin(pawn.rotation_y * DEG) *
-      ((press_right - press_left) * MOVE_SPEED * press_sprint) +
-    Math.cos(pawn.rotation_y * DEG) *
-      ((press_forward - press_back) * MOVE_SPEED * press_sprint)
+    Math.sin(pawn.rotation_y * DEG) * ((press_right - press_left) * MOVE_SPEED * press_sprint) +
+    Math.cos(pawn.rotation_y * DEG) * ((press_forward - press_back) * MOVE_SPEED * press_sprint)
   );
   let dy = -press_up * JUMP_SPEED;
   let drx = mouse_y;
