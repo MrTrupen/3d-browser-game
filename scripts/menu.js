@@ -9,7 +9,10 @@ let button3 = document.getElementById("button3");
 button1.onclick = function () {
   menu1.style.display = "none";
   menu2.style.display = "none";
-  can_lock = true;
+
+  can_lock_mouse = true;
+  create_new_world();
+  TimerGame = setInterval(update, UPDATE_INTERVAL);
 };
 
 // create navigation

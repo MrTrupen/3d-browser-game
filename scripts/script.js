@@ -10,7 +10,7 @@ var press_sprint = 1;
 let mouse_x = 0;
 let mouse_y = 0;
 let is_mouse_locked = false;
-let can_lock = false;
+let can_lock_mouse = false;
 
 // Variable for HTML objects
 var world = document.getElementById("world");
@@ -18,7 +18,7 @@ var container = document.getElementById("container");
 
 // Mouse locking
 container.onclick = function () {
-  if (can_lock) {
+  if (can_lock_mouse) {
     if (!is_mouse_locked) {
       container.requestPointerLock();
     } else {
@@ -161,8 +161,3 @@ function create_new_world() {
     }
   }
 }
-
-// Generate the world
-create_new_world();
-
-TimerGame = setInterval(update, UPDATE_INTERVAL);
