@@ -42,3 +42,18 @@ body {
   background-color: #ffaa5e;
   cursor: pointer;
 }
+
+#button1 {
+  top: 100px;
+  left: 150px;
+}
+
+#button2 {
+  top: 450px;
+  left: 150px;
+}
+
+#button3 {
+  top: 450px;
+  left: 150px;
+}
