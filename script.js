@@ -136,12 +136,12 @@ function update() {
     "deg) rotateY(" +
     -pawn.rotation_y +
     "deg) translate3d(" +
-    -pawn.x +
-    "px," +
-    -pawn.y +
-    "px," +
-    -pawn.z +
-    "px)";
+    to_px(-pawn.x) +
+    "," +
+    to_px(-pawn.y) +
+    "," +
+    to_px(-pawn.z) +
+    ")";
 
   mouse_x = 0;
   mouse_y = 0;
@@ -153,20 +153,20 @@ function create_new_world() {
     let newElement = document.createElement("div");
     newElement.className = "square";
     newElement.id = "square" + i;
-    newElement.style.width = map[i][6] + "px";
-    newElement.style.height = map[i][7] + "px";
+    newElement.style.width = to_px(map[i][6]);
+    newElement.style.height = to_px(map[i][7]);
 
     // Apply textures based on surface type
     newElement.style.backgroundImage = map[i][8];
 
     newElement.style.transform =
       "translate3d(" +
-      (600 - map[i][6] / 2 + map[i][0]) +
-      "px," +
-      (400 - map[i][7] / 2 + map[i][1]) +
-      "px," +
-      map[i][2] +
-      "px) rotateX(" +
+      to_px(600 - map[i][6] / 2 + map[i][0]) +
+      "," +
+      to_px(400 - map[i][7] / 2 + map[i][1]) +
+      "," +
+      to_px(map[i][2]) +
+      ") rotateX(" +
       map[i][3] +
       "deg) rotateY(" +
       map[i][4] +
