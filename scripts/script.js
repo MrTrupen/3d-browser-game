@@ -12,6 +12,9 @@ let mouse_y = 0;
 let is_mouse_locked = false;
 let can_lock_mouse = false;
 
+// Rotation angle for collectibles
+let collectible_rotation = 0;
+
 // Variable for HTML objects
 var world = document.getElementById("world");
 var container = document.getElementById("container");
@@ -124,6 +127,10 @@ function update() {
     to_px(-pawn.z) +
     ")";
 
+  // Update rotation for collectibles
+  collectible_rotation = (collectible_rotation + 2) % 360;
+  rotate_collectibles();
+
   mouse_x = 0;
   mouse_y = 0;
 }
@@ -164,5 +171,49 @@ function create_squares(squares, object_type) {
 
     //insert rectangles into the world
     world.append(newElement);
+  }
+}
+
+function rotate_collectibles() {
+  // Rotate all coins
+  for (let i = 0; i < coins.length; i++) {
+    let coinElement = document.getElementById("coins" + i);
+    if (coinElement) {
+      coinElement.style.transform =
+        "translate3d(" +
+        to_px(600 - coins[i].width / 2 + coins[i].x) +
+        "," +
+        to_px(400 - coins[i].height / 2 + coins[i].y) +
+        "," +
+        to_px(coins[i].z) +
+        ") rotateX(" +
+        coins[i].rotation_x +
+        "deg) rotateY(" +
+        (coins[i].rotation_y + collectible_rotation) +
+        "deg) rotateZ(" +
+        coins[i].rotation_z +
+        "deg)";
+    }
+  }
+
+  // Rotate all keys
+  for (let i = 0; i < keys.length; i++) {
+    let keyElement = document.getElementById("keys" + i);
+    if (keyElement) {
+      keyElement.style.transform =
+        "translate3d(" +
+        to_px(600 - keys[i].width / 2 + keys[i].x) +
+        "," +
+        to_px(400 - keys[i].height / 2 + keys[i].y) +
+        "," +
+        to_px(keys[i].z) +
+        ") rotateX(" +
+        keys[i].rotation_x +
+        "deg) rotateY(" +
+        (keys[i].rotation_y + collectible_rotation) +
+        "deg) rotateZ(" +
+        keys[i].rotation_z +
+        "deg)";
+    }
   }
 }
