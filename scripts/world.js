@@ -22,3 +22,7 @@ let coins = [
   new rectangle(-100, 50, -200, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // coin
   new rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // coin
 ];
+
+let keys = [
+  new rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // key
+];

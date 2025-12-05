@@ -132,6 +132,7 @@ function create_new_world() {
   create_squares(boundries, "bondries");
   create_squares(generate_maze(10, 200), "walls");
   create_squares(coins, "coins");
+  create_squares(keys, "keys");
 }
 
 function create_squares(squares, object_type) {
