@@ -10,6 +10,7 @@ var press_sprint = 1;
 let mouse_x = 0;
 let mouse_y = 0;
 let is_mouse_locked = false;
+let can_lock_mouse = false;
 
 // Variable for HTML objects
 var world = document.getElementById("world");
@@ -17,10 +18,12 @@ var container = document.getElementById("container");
 
 // Mouse locking
 container.onclick = function () {
-  if (!is_mouse_locked) {
-    container.requestPointerLock();
-  } else {
-    document.exitPointerLock(); // Use document for exit
+  if (can_lock_mouse) {
+    if (!is_mouse_locked) {
+      container.requestPointerLock();
+    } else {
+      document.exitPointerLock(); // Use document for exit
+    }
   }
 };
 
@@ -158,8 +161,3 @@ function create_new_world() {
     }
   }
 }
-
-// Generate the world
-create_new_world();
-
-TimerGame = setInterval(update, UPDATE_INTERVAL);
