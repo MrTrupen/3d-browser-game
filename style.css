@@ -42,7 +42,7 @@ body {
 .button {
   position: absolute;
   width: 900px;
-  height: 250px;
+  height: 150px;
   background-color: #d08159;
   display: flex;
   align-items: center;
@@ -60,11 +60,21 @@ body {
 }
 
 #button2 {
-  top: 450px;
+  top: 300px;
   left: 150px;
 }
 
 #button3 {
+  top: 450px;
+  left: 150px;
+}
+
+#button4 {
+  top: 500px;
+  left: 150px;
+}
+
+#button5 {
   top: 450px;
   left: 150px;
 }
