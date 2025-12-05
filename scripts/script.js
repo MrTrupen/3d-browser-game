@@ -138,8 +138,8 @@ function update() {
 function create_new_world() {
   create_squares(boundries, "bondries");
   create_squares(generate_maze(10, 200), "walls");
-  create_squares(coins, "coins");
-  create_squares(keys, "keys");
+  create_squares(coins, "coin");
+  create_squares(keys, "key");
 }
 
 function create_squares(squares, object_type) {
@@ -177,7 +177,7 @@ function create_squares(squares, object_type) {
 function rotate_collectibles() {
   // Rotate all coins
   for (let i = 0; i < coins.length; i++) {
-    let coinElement = document.getElementById("coins" + i);
+    let coinElement = document.getElementById("coin" + i);
     if (coinElement) {
       coinElement.style.transform =
         "translate3d(" +
@@ -198,7 +198,7 @@ function rotate_collectibles() {
 
   // Rotate all keys
   for (let i = 0; i < keys.length; i++) {
-    let keyElement = document.getElementById("keys" + i);
+    let keyElement = document.getElementById("key" + i);
     if (keyElement) {
       keyElement.style.transform =
         "translate3d(" +
@@ -216,4 +216,22 @@ function rotate_collectibles() {
         "deg)";
     }
   }
+}
+
+function iteration(squares, string) {
+  for (let i = 0; i < squares.length; i++) {
+    let r = (squares[i].x - pawn.x) ** 2 + (squares[i].y - pawn.y) ** 2 + (squares[i].z - pawn.z) ** 2;
+    let r1 = squares[i].width ** 2;
+
+    if (r < r1) {
+      document.getElementById(string + i).style.display = "none";
+      squares[i].x = 999999;
+    }
+  }
+}
+
+function repeat_forever() {
+  update();
+  iteration(coins, "coin");
+  iteration(keys, "key");
 }

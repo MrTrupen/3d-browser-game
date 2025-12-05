@@ -18,7 +18,7 @@ button1.onclick = function () {
 
   can_lock_mouse = true;
   create_new_world();
-  TimerGame = setInterval(update, UPDATE_INTERVAL);
+  TimerGame = setInterval(repeat_forever, UPDATE_INTERVAL);
 };
 
 // create navigation
