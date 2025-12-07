@@ -12,6 +12,9 @@ let mouse_y = 0;
 let is_mouse_locked = false;
 let can_lock_mouse = false;
 
+// Rotation angle for collectibles
+let collectible_rotation = 0;
+
 // Variable for HTML objects
 var world = document.getElementById("world");
 var container = document.getElementById("container");
@@ -124,40 +127,111 @@ function update() {
     to_px(-pawn.z) +
     ")";
 
+  // Update rotation for collectibles
+  collectible_rotation = (collectible_rotation + 2) % 360;
+  rotate_collectibles();
+
   mouse_x = 0;
   mouse_y = 0;
 }
 
 function create_new_world() {
-  for (let array_idx = 0; array_idx < objects.length; array_idx++) {
-    for (let object_idx = 0; object_idx < objects[array_idx].length; object_idx++) {
-      //create rectangles and styles
-      let newElement = document.createElement("div");
-      newElement.className = "square";
-      newElement.id = "square_" + array_idx + "_" + object_idx;
-      newElement.style.width = to_px(objects[array_idx][object_idx].width);
-      newElement.style.height = to_px(objects[array_idx][object_idx].height);
+  create_squares(boundries, "bondries");
+  create_squares(generate_maze(10, 200), "walls");
+  create_squares(coins, "coin");
+  create_squares(keys, "key");
+}
 
-      // Apply textures based on surface type
-      newElement.style.backgroundImage = objects[array_idx][object_idx].pattern_path;
+function create_squares(squares, object_type) {
+  for (let object_idx = 0; object_idx < squares.length; object_idx++) {
+    //create rectangles and styles
+    let newElement = document.createElement("div");
+    newElement.className = object_type + " square";
+    newElement.id = object_type + object_idx;
+    newElement.style.width = to_px(squares[object_idx].width);
+    newElement.style.height = to_px(squares[object_idx].height);
 
-      newElement.style.transform =
+    // Apply textures based on surface type
+    newElement.style.backgroundImage = squares[object_idx].pattern_path;
+
+    newElement.style.transform =
+      "translate3d(" +
+      to_px(600 - squares[object_idx].width / 2 + squares[object_idx].x) +
+      "," +
+      to_px(400 - squares[object_idx].height / 2 + squares[object_idx].y) +
+      "," +
+      to_px(squares[object_idx].z) +
+      ") rotateX(" +
+      squares[object_idx].rotation_x +
+      "deg) rotateY(" +
+      squares[object_idx].rotation_y +
+      "deg) rotateZ(" +
+      squares[object_idx].rotation_z +
+      "deg)";
+
+    //insert rectangles into the world
+    world.append(newElement);
+  }
+}
+
+function rotate_collectibles() {
+  // Rotate all coins
+  for (let i = 0; i < coins.length; i++) {
+    let coinElement = document.getElementById("coin" + i);
+    if (coinElement) {
+      coinElement.style.transform =
         "translate3d(" +
-        to_px(600 - objects[array_idx][object_idx].width / 2 + objects[array_idx][object_idx].x) +
+        to_px(600 - coins[i].width / 2 + coins[i].x) +
         "," +
-        to_px(400 - objects[array_idx][object_idx].height / 2 + objects[array_idx][object_idx].y) +
+        to_px(400 - coins[i].height / 2 + coins[i].y) +
         "," +
-        to_px(objects[array_idx][object_idx].z) +
+        to_px(coins[i].z) +
         ") rotateX(" +
-        objects[array_idx][object_idx].rotation_x +
+        coins[i].rotation_x +
         "deg) rotateY(" +
-        objects[array_idx][object_idx].rotation_y +
+        (coins[i].rotation_y + collectible_rotation) +
         "deg) rotateZ(" +
-        objects[array_idx][object_idx].rotation_z +
+        coins[i].rotation_z +
         "deg)";
-
-      //insert rectangles into the world
-      world.append(newElement);
     }
   }
+
+  // Rotate all keys
+  for (let i = 0; i < keys.length; i++) {
+    let keyElement = document.getElementById("key" + i);
+    if (keyElement) {
+      keyElement.style.transform =
+        "translate3d(" +
+        to_px(600 - keys[i].width / 2 + keys[i].x) +
+        "," +
+        to_px(400 - keys[i].height / 2 + keys[i].y) +
+        "," +
+        to_px(keys[i].z) +
+        ") rotateX(" +
+        keys[i].rotation_x +
+        "deg) rotateY(" +
+        (keys[i].rotation_y + collectible_rotation) +
+        "deg) rotateZ(" +
+        keys[i].rotation_z +
+        "deg)";
+    }
+  }
+}
+
+function iteration(squares, string) {
+  for (let i = 0; i < squares.length; i++) {
+    let r = (squares[i].x - pawn.x) ** 2 + (squares[i].y - pawn.y) ** 2 + (squares[i].z - pawn.z) ** 2;
+    let r1 = squares[i].width ** 2;
+
+    if (r < r1) {
+      document.getElementById(string + i).style.display = "none";
+      squares[i].x = 999999;
+    }
+  }
+}
+
+function repeat_forever() {
+  update();
+  iteration(coins, "coin");
+  iteration(keys, "key");
 }
