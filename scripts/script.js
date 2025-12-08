@@ -86,45 +86,45 @@ document.addEventListener("mousemove", (event) => {
   mouseY = event.movementY * MOUSE_SPEED;
 });
 
-const pawn = new Player(0, 0, 0, 0, 0);
+const player = new Player(0, 0, 0, 0, 0);
 
 function update() {
   // Count movement
   let differenceX =
-    Math.cos(pawn.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) -
-    Math.sin(pawn.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint);
+    Math.cos(player.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) -
+    Math.sin(player.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint);
   let differenceZ = -(
-    Math.sin(pawn.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) +
-    Math.cos(pawn.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint)
+    Math.sin(player.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) +
+    Math.cos(player.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint)
   );
   let differenceY = -pressUp * JUMP_SPEED;
   let differenceRotationX = mouseY;
   let differenceRotationY = -mouseX;
 
   // Add movement to the coordinates
-  pawn.x = pawn.x + differenceX;
-  pawn.y = Math.min(0, pawn.y + differenceY);
-  pawn.z = pawn.z + differenceZ;
+  player.x = player.x + differenceX;
+  player.y = Math.min(0, player.y + differenceY);
+  player.z = player.z + differenceZ;
 
   // Rotate only when mouse is locked
   if (isMouseLocked) {
-    pawn.rotationX = pawn.rotationX + differenceRotationX;
-    pawn.rotationY = pawn.rotationY + differenceRotationY;
+    player.rotationX = player.rotationX + differenceRotationX;
+    player.rotationY = player.rotationY + differenceRotationY;
   }
 
   // Change coordinates of the world
   world.style.transform =
     "translateZ(600px)" +
     "rotateX(" +
-    -pawn.rotationX +
+    -player.rotationX +
     "deg) rotateY(" +
-    -pawn.rotationY +
+    -player.rotationY +
     "deg) translate3d(" +
-    to_px(-pawn.x) +
+    to_px(-player.x) +
     "," +
-    to_px(-pawn.y) +
+    to_px(-player.y) +
     "," +
-    to_px(-pawn.z) +
+    to_px(-player.z) +
     ")";
 
   // Update rotation for collectibles
@@ -218,20 +218,20 @@ function rotateCollectibles() {
   }
 }
 
-function iteration(squares, string) {
-  for (let i = 0; i < squares.length; i++) {
-    let r = (squares[i].x - pawn.x) ** 2 + (squares[i].y - pawn.y) ** 2 + (squares[i].z - pawn.z) ** 2;
-    let r1 = squares[i].width ** 2;
+function checkCollectibleCollision(collectibles, elementPrefix) {
+  for (let i = 0; i < collectibles.length; i++) {
+    let distanceSquared = (collectibles[i].x - player.x) ** 2 + (collectibles[i].y - player.y) ** 2 + (collectibles[i].z - player.z) ** 2;
+    let collisionRadiusSquared = collectibles[i].width ** 2;
 
-    if (r < r1) {
-      document.getElementById(string + i).style.display = "none";
-      squares[i].x = 999999;
+    if (distanceSquared < collisionRadiusSquared) {
+      document.getElementById(elementPrefix + i).style.display = "none";
+      collectibles[i].x = 999999;
     }
   }
 }
 
 function repeatForever() {
   update();
-  iteration(coins, "coin");
-  iteration(keys, "key");
+  checkCollectibleCollision(coins, "coin");
+  checkCollectibleCollision(keys, "key");
 }
