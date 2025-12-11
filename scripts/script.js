@@ -220,12 +220,19 @@ function rotateCollectibles() {
 
 function checkCollectibleCollision(collectibles, elementPrefix) {
   for (let i = 0; i < collectibles.length; i++) {
-    let distanceSquared = (collectibles[i].x - player.x) ** 2 + (collectibles[i].y - player.y) ** 2 + (collectibles[i].z - player.z) ** 2;
+    let distanceSquared =
+      (collectibles[i].x - player.x) ** 2 + (collectibles[i].y - player.y) ** 2 + (collectibles[i].z - player.z) ** 2;
     let collisionRadiusSquared = collectibles[i].width ** 2;
 
     if (distanceSquared < collisionRadiusSquared) {
       document.getElementById(elementPrefix + i).style.display = "none";
       collectibles[i].x = 999999;
+
+      // Play pickup sound if it exists
+      if (collectibles[i].sound) {
+        const pickupSound = new Audio(collectibles[i].sound);
+        pickupSound.play();
+      }
     }
   }
 }

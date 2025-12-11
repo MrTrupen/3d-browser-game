@@ -17,12 +17,12 @@ let boundaries = [
 ];
 
 let coins = [
-  new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // coin
-  new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // coin
-  new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // coin
-  new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // coin
+  new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('Patterns/door.png')", "sounds/gui_click.wav"), // coin
+  new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('Patterns/door.png')", "sounds/gui_click.wav"), // coin
+  new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('Patterns/door.png')", "sounds/gui_click.wav"), // coin
+  new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('Patterns/door.png')", "sounds/gui_click.wav"), // coin
 ];
 
 let keys = [
-  new Rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('Patterns/door.png')"), // key
+  new Rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('Patterns/door.png')", "sounds/gui_click.wav"), // key
 ];
