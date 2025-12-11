@@ -138,7 +138,7 @@ function update() {
 function createNewWorld() {
   createSquares(boundaries, "boundaries");
   createSquares(generateMaze(10, 200), "walls");
-  createSquares(coins, "coin");
+  createSquares(crystals, "crystal");
   createSquares(keys, "key");
 }
 
@@ -175,23 +175,23 @@ function createSquares(squares, objectType) {
 }
 
 function rotateCollectibles() {
-  // Rotate all coins
-  for (let i = 0; i < coins.length; i++) {
-    let coinElement = document.getElementById("coin" + i);
-    if (coinElement) {
-      coinElement.style.transform =
+  // Rotate all crystals
+  for (let i = 0; i < crystals.length; i++) {
+    let crystalElement = document.getElementById("crystal" + i);
+    if (crystalElement) {
+      crystalElement.style.transform =
         "translate3d(" +
-        to_px(600 - coins[i].width / 2 + coins[i].x) +
+        to_px(600 - crystals[i].width / 2 + crystals[i].x) +
         "," +
-        to_px(400 - coins[i].height / 2 + coins[i].y) +
+        to_px(400 - crystals[i].height / 2 + crystals[i].y) +
         "," +
-        to_px(coins[i].z) +
+        to_px(crystals[i].z) +
         ") rotateX(" +
-        coins[i].rotationX +
+        crystals[i].rotationX +
         "deg) rotateY(" +
-        (coins[i].rotationY + collectibleRotation) +
+        (crystals[i].rotationY + collectibleRotation) +
         "deg) rotateZ(" +
-        coins[i].rotationZ +
+        crystals[i].rotationZ +
         "deg)";
     }
   }
@@ -239,6 +239,6 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
 
 function repeatForever() {
   update();
-  checkCollectibleCollision(coins, "coin");
+  checkCollectibleCollision(crystals, "crystal");
   checkCollectibleCollision(keys, "key");
 }
