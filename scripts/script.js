@@ -1,28 +1,28 @@
-//Variables for movement
-var press_left = 0;
-var press_right = 0;
-var press_forward = 0;
-var press_back = 0;
-var press_up = 0;
-var press_sprint = 1;
+// Variables for movement
+let pressLeft = 0;
+let pressRight = 0;
+let pressForward = 0;
+let pressBack = 0;
+let pressUp = 0;
+let pressSprint = 1;
 
 // Variables for mouse
-let mouse_x = 0;
-let mouse_y = 0;
-let is_mouse_locked = false;
-let can_lock_mouse = false;
+let mouseX = 0;
+let mouseY = 0;
+let isMouseLocked = false;
+let canLockMouse = false;
 
 // Rotation angle for collectibles
-let collectible_rotation = 0;
+let collectibleRotation = 0;
 
 // Variable for HTML objects
-var world = document.getElementById("world");
-var container = document.getElementById("container");
+const world = document.getElementById("world");
+const container = document.getElementById("container");
 
 // Mouse locking
 container.onclick = function () {
-  if (can_lock_mouse) {
-    if (!is_mouse_locked) {
+  if (canLockMouse) {
+    if (!isMouseLocked) {
       container.requestPointerLock();
     } else {
       document.exitPointerLock(); // Use document for exit
@@ -33,148 +33,148 @@ container.onclick = function () {
 // Listen for pointer lock change
 document.addEventListener("pointerlockchange", (event) => {
   // Update lock status based on pointerLockElement
-  is_mouse_locked = document.pointerLockElement === container;
+  isMouseLocked = document.pointerLockElement === container;
 });
 
-//if the key is pressed
+// If the key is pressed
 document.addEventListener("keydown", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
-    press_forward = 1;
+    pressForward = 1;
   }
   if (KEY_BACK.includes(event.key)) {
-    press_back = 1;
+    pressBack = 1;
   }
   if (KEY_RIGHT.includes(event.key)) {
-    press_right = 1;
+    pressRight = 1;
   }
   if (KEY_LEFT.includes(event.key)) {
-    press_left = 1;
+    pressLeft = 1;
   }
   if (KEY_JUMP.includes(event.key)) {
-    press_up = 1;
+    pressUp = 1;
   }
   if (KEY_SPRINT.includes(event.key)) {
-    press_sprint = SPRINT_SPEED;
+    pressSprint = SPRINT_SPEED;
   }
 });
 
-// if the key is released
+// If the key is released
 document.addEventListener("keyup", (event) => {
   if (KEY_FORWARD.includes(event.key)) {
-    press_forward = 0;
+    pressForward = 0;
   }
   if (KEY_BACK.includes(event.key)) {
-    press_back = 0;
+    pressBack = 0;
   }
   if (KEY_RIGHT.includes(event.key)) {
-    press_right = 0;
+    pressRight = 0;
   }
   if (KEY_LEFT.includes(event.key)) {
-    press_left = 0;
+    pressLeft = 0;
   }
   if (KEY_JUMP.includes(event.key)) {
-    press_up = -GRAVITY;
+    pressUp = -GRAVITY;
   }
   if (KEY_SPRINT.includes(event.key)) {
-    press_sprint = 1;
+    pressSprint = 1;
   }
 });
 
 // Mouse movement listener
 document.addEventListener("mousemove", (event) => {
-  mouse_x = event.movementX * MOUSE_SPEED;
-  mouse_y = event.movementY * MOUSE_SPEED;
+  mouseX = event.movementX * MOUSE_SPEED;
+  mouseY = event.movementY * MOUSE_SPEED;
 });
 
-var pawn = new player(0, 0, 0, 0, 0);
+const player = new Player(0, 0, 0, 0, 0);
 
 function update() {
-  //count movement
-  let difference_x =
-    Math.cos(pawn.rotation_y * DEG) * ((press_right - press_left) * MOVE_SPEED * press_sprint) -
-    Math.sin(pawn.rotation_y * DEG) * ((press_forward - press_back) * MOVE_SPEED * press_sprint);
-  let difference_z = -(
-    Math.sin(pawn.rotation_y * DEG) * ((press_right - press_left) * MOVE_SPEED * press_sprint) +
-    Math.cos(pawn.rotation_y * DEG) * ((press_forward - press_back) * MOVE_SPEED * press_sprint)
+  // Count movement
+  let differenceX =
+    Math.cos(player.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) -
+    Math.sin(player.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint);
+  let differenceZ = -(
+    Math.sin(player.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) +
+    Math.cos(player.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint)
   );
-  let difference_y = -press_up * JUMP_SPEED;
-  let difference_rotation_x = mouse_y;
-  let difference_rotation_y = -mouse_x;
+  let differenceY = -pressUp * JUMP_SPEED;
+  let differenceRotationX = mouseY;
+  let differenceRotationY = -mouseX;
 
-  //add movement to the coordinates
-  pawn.x = pawn.x + difference_x;
-  pawn.y = Math.min(0, pawn.y + difference_y);
-  pawn.z = pawn.z + difference_z;
+  // Add movement to the coordinates
+  player.x = player.x + differenceX;
+  player.y = Math.min(0, player.y + differenceY);
+  player.z = player.z + differenceZ;
 
-  // rotate only when mouse is locked
-  if (is_mouse_locked) {
-    pawn.rotation_x = pawn.rotation_x + difference_rotation_x;
-    pawn.rotation_y = pawn.rotation_y + difference_rotation_y;
+  // Rotate only when mouse is locked
+  if (isMouseLocked) {
+    player.rotationX = player.rotationX + differenceRotationX;
+    player.rotationY = player.rotationY + differenceRotationY;
   }
 
-  //change coordinates of the world
+  // Change coordinates of the world
   world.style.transform =
     "translateZ(600px)" +
     "rotateX(" +
-    -pawn.rotation_x +
+    -player.rotationX +
     "deg) rotateY(" +
-    -pawn.rotation_y +
+    -player.rotationY +
     "deg) translate3d(" +
-    to_px(-pawn.x) +
+    to_px(-player.x) +
     "," +
-    to_px(-pawn.y) +
+    to_px(-player.y) +
     "," +
-    to_px(-pawn.z) +
+    to_px(-player.z) +
     ")";
 
   // Update rotation for collectibles
-  collectible_rotation = (collectible_rotation + 2) % 360;
-  rotate_collectibles();
+  collectibleRotation = (collectibleRotation + 2) % 360;
+  rotateCollectibles();
 
-  mouse_x = 0;
-  mouse_y = 0;
+  mouseX = 0;
+  mouseY = 0;
 }
 
-function create_new_world() {
-  create_squares(boundries, "bondries");
-  create_squares(generate_maze(10, 200), "walls");
-  create_squares(coins, "coin");
-  create_squares(keys, "key");
+function createNewWorld() {
+  createSquares(boundaries, "boundaries");
+  createSquares(generateMaze(10, 200), "walls");
+  createSquares(coins, "coin");
+  createSquares(keys, "key");
 }
 
-function create_squares(squares, object_type) {
-  for (let object_idx = 0; object_idx < squares.length; object_idx++) {
-    //create rectangles and styles
+function createSquares(squares, objectType) {
+  for (let objectIdx = 0; objectIdx < squares.length; objectIdx++) {
+    // Create rectangles and styles
     let newElement = document.createElement("div");
-    newElement.className = object_type + " square";
-    newElement.id = object_type + object_idx;
-    newElement.style.width = to_px(squares[object_idx].width);
-    newElement.style.height = to_px(squares[object_idx].height);
+    newElement.className = objectType + " square";
+    newElement.id = objectType + objectIdx;
+    newElement.style.width = to_px(squares[objectIdx].width);
+    newElement.style.height = to_px(squares[objectIdx].height);
 
     // Apply textures based on surface type
-    newElement.style.backgroundImage = squares[object_idx].pattern_path;
+    newElement.style.backgroundImage = squares[objectIdx].patternPath;
 
     newElement.style.transform =
       "translate3d(" +
-      to_px(600 - squares[object_idx].width / 2 + squares[object_idx].x) +
+      to_px(600 - squares[objectIdx].width / 2 + squares[objectIdx].x) +
       "," +
-      to_px(400 - squares[object_idx].height / 2 + squares[object_idx].y) +
+      to_px(400 - squares[objectIdx].height / 2 + squares[objectIdx].y) +
       "," +
-      to_px(squares[object_idx].z) +
+      to_px(squares[objectIdx].z) +
       ") rotateX(" +
-      squares[object_idx].rotation_x +
+      squares[objectIdx].rotationX +
       "deg) rotateY(" +
-      squares[object_idx].rotation_y +
+      squares[objectIdx].rotationY +
       "deg) rotateZ(" +
-      squares[object_idx].rotation_z +
+      squares[objectIdx].rotationZ +
       "deg)";
 
-    //insert rectangles into the world
+    // Insert rectangles into the world
     world.append(newElement);
   }
 }
 
-function rotate_collectibles() {
+function rotateCollectibles() {
   // Rotate all coins
   for (let i = 0; i < coins.length; i++) {
     let coinElement = document.getElementById("coin" + i);
@@ -187,11 +187,11 @@ function rotate_collectibles() {
         "," +
         to_px(coins[i].z) +
         ") rotateX(" +
-        coins[i].rotation_x +
+        coins[i].rotationX +
         "deg) rotateY(" +
-        (coins[i].rotation_y + collectible_rotation) +
+        (coins[i].rotationY + collectibleRotation) +
         "deg) rotateZ(" +
-        coins[i].rotation_z +
+        coins[i].rotationZ +
         "deg)";
     }
   }
@@ -208,30 +208,30 @@ function rotate_collectibles() {
         "," +
         to_px(keys[i].z) +
         ") rotateX(" +
-        keys[i].rotation_x +
+        keys[i].rotationX +
         "deg) rotateY(" +
-        (keys[i].rotation_y + collectible_rotation) +
+        (keys[i].rotationY + collectibleRotation) +
         "deg) rotateZ(" +
-        keys[i].rotation_z +
+        keys[i].rotationZ +
         "deg)";
     }
   }
 }
 
-function iteration(squares, string) {
-  for (let i = 0; i < squares.length; i++) {
-    let r = (squares[i].x - pawn.x) ** 2 + (squares[i].y - pawn.y) ** 2 + (squares[i].z - pawn.z) ** 2;
-    let r1 = squares[i].width ** 2;
+function checkCollectibleCollision(collectibles, elementPrefix) {
+  for (let i = 0; i < collectibles.length; i++) {
+    let distanceSquared = (collectibles[i].x - player.x) ** 2 + (collectibles[i].y - player.y) ** 2 + (collectibles[i].z - player.z) ** 2;
+    let collisionRadiusSquared = collectibles[i].width ** 2;
 
-    if (r < r1) {
-      document.getElementById(string + i).style.display = "none";
-      squares[i].x = 999999;
+    if (distanceSquared < collisionRadiusSquared) {
+      document.getElementById(elementPrefix + i).style.display = "none";
+      collectibles[i].x = 999999;
     }
   }
 }
 
-function repeat_forever() {
+function repeatForever() {
   update();
-  iteration(coins, "coin");
-  iteration(keys, "key");
+  checkCollectibleCollision(coins, "coin");
+  checkCollectibleCollision(keys, "key");
 }

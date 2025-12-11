@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>3D Game</title>
-    <link rel="stylesheet" href="style.css" />
     <meta charset="utf-8" />
+    <title>3D Maze Game</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <div id="container">
       <div id="world"></div>
-      <div id="menu1" class="menu" style="display: block">
-        <div id="button1" class="button">Start game</div>
-        <div id="button2" class="button">Instructions</div>
-        <div id="button4" class="button">Rules</div>
+
+      <!-- Main Menu -->
+      <div id="main-menu" class="menu" style="display: block">
+        <div id="start-game-btn" class="button">Start game</div>
+        <div id="instructions-btn" class="button">Instructions</div>
+        <div id="rules-btn" class="button">Rules</div>
       </div>
-      <div id="menu2" class="menu">
+
+      <!-- Instructions Menu -->
+      <div id="instructions-menu" class="menu">
         <p><strong>Control keys</strong></p>
         <br />
         WASD/Arrow - Movement<br />
         Spacebar - Jump<br />
         Shift - Sprint<br />
-        <div id="button3" class="button">Back</div>
+        <div class="button back-btn">Back</div>
       </div>
-      <div id="menu3" class="menu">
+
+      <!-- Rules Menu -->
+      <div id="rules-menu" class="menu">
         <p><strong>Rules</strong></p>
         Collect items to win<br />
-        <div id="button5" class="button">Back</div>
+        <div class="button back-btn">Back</div>
       </div>
     </div>
+
+    <!-- Game Scripts -->
+    <script src="scripts/constants.js"></script>
+    <script src="scripts/classes.js"></script>
+    <script src="scripts/tools.js"></script>
+    <script src="scripts/maze.js"></script>
+    <script src="scripts/world.js"></script>
+    <script src="scripts/script.js"></script>
+    <script src="scripts/menu.js"></script>
   </body>
 </html>
-<script src="scripts/constants.js"></script>
-<script src="scripts/classes.js"></script>
-<script src="scripts/tools.js"></script>
-<script src="scripts/maze.js"></script>
-<script src="scripts/world.js"></script>
-<script src="scripts/script.js"></script>
-<script src="scripts/menu.js"></script>

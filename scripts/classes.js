@@ -1,23 +1,23 @@
-class player {
-  constructor(x, y, z, rotation_x, rotation_y) {
+class Player {
+  constructor(x, y, z, rotationX, rotationY) {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.rotation_x = rotation_x;
-    this.rotation_y = rotation_y;
+    this.rotationX = rotationX;
+    this.rotationY = rotationY;
   }
 }
 
-class rectangle {
-  constructor(x, y, z, rotation_x, rotation_y, rotation_z, width, height, pattern_path) {
+class Rectangle {
+  constructor(x, y, z, rotationX, rotationY, rotationZ, width, height, patternPath) {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.rotation_x = rotation_x;
-    this.rotation_y = rotation_y;
-    this.rotation_z = rotation_z;
+    this.rotationX = rotationX;
+    this.rotationY = rotationY;
+    this.rotationZ = rotationZ;
     this.width = width;
     this.height = height;
-    this.pattern_path = pattern_path;
+    this.patternPath = patternPath;
   }
 }

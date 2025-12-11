@@ -54,27 +54,22 @@ body {
   cursor: pointer;
 }
 
-#button1 {
+.back-btn {
+  top: 450px;
+  left: 150px;
+}
+
+#start-game-btn {
   top: 100px;
   left: 150px;
 }
 
-#button2 {
+#instructions-btn {
   top: 300px;
   left: 150px;
 }
 
-#button3 {
-  top: 450px;
-  left: 150px;
-}
-
-#button4 {
+#rules-btn {
   top: 500px;
-  left: 150px;
-}
-
-#button5 {
-  top: 450px;
   left: 150px;
 }
