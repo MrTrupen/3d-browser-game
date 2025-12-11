@@ -4,8 +4,8 @@ let instructionsMenu = document.getElementById("instructions-menu");
 let rulesMenu = document.getElementById("rules-menu");
 let startGameBtn = document.getElementById("start-game-btn");
 let instructionsBtn = document.getElementById("instructions-btn");
-let backBtn = document.getElementById("back-btn");
 let rulesBtn = document.getElementById("rules-btn");
+let backBtns = document.querySelectorAll(".back-btn");
 
 // Audio
 const clickSound = new Audio("sounds/gui_click.wav");
@@ -30,13 +30,15 @@ instructionsBtn.onclick = function () {
   rulesMenu.style.display = "none";
 };
 
-// Back button - returns to main menu from any submenu
-backBtn.onclick = function () {
-  clickSound.play();
-  mainMenu.style.display = "block";
-  instructionsMenu.style.display = "none";
-  rulesMenu.style.display = "none";
-};
+// Back buttons - returns to main menu from any submenu
+backBtns.forEach(function (btn) {
+  btn.onclick = function () {
+    clickSound.play();
+    mainMenu.style.display = "block";
+    instructionsMenu.style.display = "none";
+    rulesMenu.style.display = "none";
+  };
+});
 
 // Rules button - shows rules menu
 rulesBtn.onclick = function () {
