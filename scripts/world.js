@@ -1,13 +1,3 @@
-let spawn_cube = [
-  // Test cube
-  new Rectangle(0, 0, -100, 0, 0, 0, 200, 200, "url('sprites/hedge.jpg')"), // front walls
-  new Rectangle(0, 0, 100, 0, 0, 0, 200, 200, "url('sprites/hedge.jpg')"), // back wall
-  new Rectangle(100, 0, 0, 0, 90, 0, 200, 200, "url('sprites/hedge.jpg')"), // right wall
-  new Rectangle(-100, 0, 0, 0, -90, 0, 200, 200, "url('sprites/hedge.jpg')"), // left wall
-  new Rectangle(0, 100, 0, 90, 0, 0, 200, 200, "url('sprites/hedge.jpg')"), // top wall
-  new Rectangle(0, -100, 0, 90, 0, 0, 200, 200, "url('sprites/hedge.jpg')"), // bottom wall
-];
-
 let boundaries = [
   new Rectangle(0, 0, -1000, 0, 0, 0, 2000, 200, "url('sprites/border_wall.png')"), // front walls
   new Rectangle(0, 0, 1000, 0, 0, 0, 2000, 200, "url('sprites/border_wall.png')"), // back wall
