@@ -9,6 +9,7 @@ let backBtns = document.querySelectorAll(".back-btn");
 
 // Audio
 const clickSound = new Audio("sounds/gui_click.wav");
+clickSound.load();
 
 // Start game button - hides menus and initializes game
 startGameBtn.onclick = function () {
