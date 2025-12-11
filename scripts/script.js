@@ -136,7 +136,7 @@ function update() {
 }
 
 function createNewWorld() {
-  createSquares(boundries, "bondries");
+  createSquares(boundaries, "boundaries");
   createSquares(generateMaze(10, 200), "walls");
   createSquares(coins, "coin");
   createSquares(keys, "key");

@@ -8,7 +8,7 @@ let spawn_cube = [
   new Rectangle(0, -100, 0, 90, 0, 0, 200, 200, "url('Patterns/hedge.jpg')"), // bottom wall
 ];
 
-let boundries = [
+let boundaries = [
   new Rectangle(0, 0, -1000, 0, 0, 0, 2000, 200, "url('Patterns/hedge.jpg')"), // front walls
   new Rectangle(0, 0, 1000, 0, 0, 0, 2000, 200, "url('Patterns/hedge.jpg')"), // back wall
   new Rectangle(1000, 0, 0, 0, 90, 0, 2000, 200, "url('Patterns/hedge.jpg')"), // right wall
