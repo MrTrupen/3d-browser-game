@@ -6,6 +6,10 @@ let pressBack = 0;
 let pressUp = 0;
 let pressSprint = 1;
 
+// Other
+const winSound = new Audio("sounds/win_screen.wav");
+winSound.load();
+
 // Variables for mouse
 let mouseX = 0;
 let mouseY = 0;
@@ -15,9 +19,21 @@ let canLockMouse = false;
 // Rotation angle for collectibles
 let collectibleRotation = 0;
 
+// Game state variables
+let totalCollectibles = 0;
+let collectedCount = 0;
+let gameStartTime = 0;
+let gameTimer = 0;
+let isGameActive = false;
+
 // Variable for HTML objects
 const world = document.getElementById("world");
 const container = document.getElementById("container");
+const gameGUI = document.getElementById("game-gui");
+const collectiblesRemainingSpan = document.getElementById("collectibles-remaining");
+const timerDisplay = document.getElementById("timer-display");
+const winScreen = document.getElementById("win-screen");
+const completionTimeDisplay = document.getElementById("completion-time");
 
 // Mouse locking
 container.onclick = function () {
@@ -161,6 +177,18 @@ function createNewWorld() {
   createCubes(level1, "walls");
   createSquares(crystals, "crystal");
   createSquares(keys, "key");
+
+  // Initialize game state
+  totalCollectibles = crystals.length + keys.length;
+  collectedCount = 0;
+  gameStartTime = Date.now();
+  gameTimer = 0;
+  isGameActive = true;
+
+  // Show GUI and update displays
+  gameGUI.style.display = "block";
+  updateCollectiblesDisplay();
+  timerDisplay.textContent = "0:00";
 }
 
 function createSquares(squares, objectType) {
@@ -268,17 +296,63 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
       document.getElementById(elementPrefix + i).style.display = "none";
       collectibles[i].x = 999999;
 
+      // Increment collected count
+      collectedCount++;
+      updateCollectiblesDisplay();
+
       // Play pickup sound if it exists
       if (collectibles[i].sound) {
         const pickupSound = new Audio(collectibles[i].sound);
         pickupSound.play();
+      }
+
+      // Check win condition
+      if (collectedCount >= totalCollectibles) {
+        winSound.play();
+        showWinScreen();
       }
     }
   }
 }
 
 function repeatForever() {
+  if (!isGameActive) return;
+
   update();
   checkCollectibleCollision(crystals, "crystal");
   checkCollectibleCollision(keys, "key");
+  updateTimer();
+}
+
+function updateTimer() {
+  gameTimer = Date.now() - gameStartTime;
+  const seconds = Math.floor(gameTimer / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  timerDisplay.textContent = minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
+}
+
+function updateCollectiblesDisplay() {
+  const remaining = totalCollectibles - collectedCount;
+  collectiblesRemainingSpan.textContent = remaining;
+}
+
+function showWinScreen() {
+  isGameActive = false;
+  canLockMouse = false;
+
+  // Unlock mouse
+  if (document.pointerLockElement) {
+    document.exitPointerLock();
+  }
+
+  // Hide GUI and show win screen
+  gameGUI.style.display = "none";
+  winScreen.style.display = "block";
+
+  // Display completion time
+  const seconds = Math.floor(gameTimer / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  completionTimeDisplay.textContent = "Time: " + minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
 }

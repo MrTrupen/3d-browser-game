@@ -37,6 +37,23 @@
         </div>
         <div class="button back-btn">Back</div>
       </div>
+
+      <!-- Win Screen -->
+      <div id="win-screen" class="menu">
+        <div class="text-content" style="top: 150px; height: 300px">
+          <p><strong>You Win!</strong></p>
+          <br />
+          <p id="completion-time">Time: 0:00</p>
+        </div>
+        <div id="replay-btn" class="button" style="top: 600px; left: 150px; width: 400px">Replay</div>
+        <div id="main-menu-btn" class="button" style="top: 600px; left: 600px; width: 400px">Main Menu</div>
+      </div>
+
+      <!-- In-game GUI -->
+      <div id="game-gui" style="display: none">
+        <div id="collectibles-counter">Collectibles: <span id="collectibles-remaining">0</span></div>
+        <div id="game-timer">Time: <span id="timer-display">0:00</span></div>
+      </div>
     </div>
 
     <!-- Game Scripts -->
