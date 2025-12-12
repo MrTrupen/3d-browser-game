@@ -58,19 +58,20 @@ document.addEventListener("pointerlockchange", (event) => {
 
 // If the key is pressed
 document.addEventListener("keydown", (event) => {
-  if (KEY_FORWARD.includes(event.key)) {
+  const key = event.key.toLowerCase();
+  if (KEY_FORWARD.includes(key) || KEY_FORWARD.includes(event.key)) {
     pressForward = 1;
   }
-  if (KEY_BACK.includes(event.key)) {
+  if (KEY_BACK.includes(key) || KEY_BACK.includes(event.key)) {
     pressBack = 1;
   }
-  if (KEY_RIGHT.includes(event.key)) {
+  if (KEY_RIGHT.includes(key) || KEY_RIGHT.includes(event.key)) {
     pressRight = 1;
   }
-  if (KEY_LEFT.includes(event.key)) {
+  if (KEY_LEFT.includes(key) || KEY_LEFT.includes(event.key)) {
     pressLeft = 1;
   }
-  if (KEY_JUMP.includes(event.key) && !event.repeat) {
+  if (KEY_JUMP.includes(key) || (KEY_JUMP.includes(event.key) && !event.repeat)) {
     pressJump = true;
   }
   if (KEY_SPRINT.includes(event.key)) {
@@ -80,19 +81,20 @@ document.addEventListener("keydown", (event) => {
 
 // If the key is released
 document.addEventListener("keyup", (event) => {
-  if (KEY_FORWARD.includes(event.key)) {
+  const key = event.key.toLowerCase();
+  if (KEY_FORWARD.includes(key) || KEY_FORWARD.includes(event.key)) {
     pressForward = 0;
   }
-  if (KEY_BACK.includes(event.key)) {
+  if (KEY_BACK.includes(key) || KEY_BACK.includes(event.key)) {
     pressBack = 0;
   }
-  if (KEY_RIGHT.includes(event.key)) {
+  if (KEY_RIGHT.includes(key) || KEY_RIGHT.includes(event.key)) {
     pressRight = 0;
   }
-  if (KEY_LEFT.includes(event.key)) {
+  if (KEY_LEFT.includes(key) || KEY_LEFT.includes(event.key)) {
     pressLeft = 0;
   }
-  if (KEY_JUMP.includes(event.key)) {
+  if (KEY_JUMP.includes(key) || KEY_JUMP.includes(event.key)) {
     pressJump = false;
   }
   if (KEY_SPRINT.includes(event.key)) {
