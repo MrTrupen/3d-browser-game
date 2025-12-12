@@ -3,8 +3,12 @@ let pressLeft = 0;
 let pressRight = 0;
 let pressForward = 0;
 let pressBack = 0;
-let pressUp = 0;
+let pressJump = false;
 let pressSprint = 1;
+
+// Physics variables
+let verticalVelocity = 0;
+let isGrounded = true;
 
 // Other
 const winSound = new Audio("sounds/win_screen.wav");
@@ -66,8 +70,8 @@ document.addEventListener("keydown", (event) => {
   if (KEY_LEFT.includes(event.key)) {
     pressLeft = 1;
   }
-  if (KEY_JUMP.includes(event.key)) {
-    pressUp = 1;
+  if (KEY_JUMP.includes(event.key) && !event.repeat) {
+    pressJump = true;
   }
   if (KEY_SPRINT.includes(event.key)) {
     pressSprint = SPRINT_SPEED;
@@ -89,7 +93,7 @@ document.addEventListener("keyup", (event) => {
     pressLeft = 0;
   }
   if (KEY_JUMP.includes(event.key)) {
-    pressUp = -GRAVITY;
+    pressJump = false;
   }
   if (KEY_SPRINT.includes(event.key)) {
     pressSprint = 1;
@@ -113,9 +117,21 @@ function update() {
     Math.sin(player.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) +
     Math.cos(player.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint)
   );
-  let differenceY = -pressUp * JUMP_SPEED;
   let differenceRotationX = mouseY;
   let differenceRotationY = -mouseX;
+
+  // Handle jumping - only jump when on ground
+  if (pressJump && isGrounded) {
+    verticalVelocity = -JUMP_SPEED;
+    isGrounded = false;
+    pressJump = false; // Consume the jump input
+  }
+
+  // Apply gravity
+  verticalVelocity += GRAVITY;
+
+  // Apply vertical velocity
+  let newY = player.y + verticalVelocity;
 
   // Calculate new position
   let newX = player.x + differenceX;
@@ -138,8 +154,17 @@ function update() {
     }
   }
 
-  // Apply vertical movement (no collision check for now)
-  player.y = Math.min(0, player.y + differenceY);
+  // Apply vertical movement with ground collision
+  if (newY >= 0) {
+    // Hit ground or below ground level
+    player.y = 0;
+    verticalVelocity = 0;
+    isGrounded = true;
+  } else {
+    // Still in air
+    player.y = newY;
+    isGrounded = false;
+  }
 
   // Rotate only when mouse is locked
   if (isMouseLocked) {
