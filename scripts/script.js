@@ -3,8 +3,17 @@ let pressLeft = 0;
 let pressRight = 0;
 let pressForward = 0;
 let pressBack = 0;
-let pressUp = 0;
+let pressJump = false;
 let pressSprint = 1;
+
+// Physics variables
+let verticalVelocity = 0;
+let isGrounded = true;
+
+// Other
+const winSound = new Audio("sounds/win_screen.wav");
+winSound.load();
+winSound.volume = 0.4;
 
 // Variables for mouse
 let mouseX = 0;
@@ -15,9 +24,21 @@ let canLockMouse = false;
 // Rotation angle for collectibles
 let collectibleRotation = 0;
 
+// Game state variables
+let totalCollectibles = 0;
+let collectedCount = 0;
+let gameStartTime = 0;
+let gameTimer = 0;
+let isGameActive = false;
+
 // Variable for HTML objects
 const world = document.getElementById("world");
 const container = document.getElementById("container");
+const gameGUI = document.getElementById("game-gui");
+const collectiblesRemainingSpan = document.getElementById("collectibles-remaining");
+const timerDisplay = document.getElementById("timer-display");
+const winScreen = document.getElementById("win-screen");
+const completionTimeDisplay = document.getElementById("completion-time");
 
 // Mouse locking
 container.onclick = function () {
@@ -38,20 +59,21 @@ document.addEventListener("pointerlockchange", (event) => {
 
 // If the key is pressed
 document.addEventListener("keydown", (event) => {
-  if (KEY_FORWARD.includes(event.key)) {
+  const key = event.key.toLowerCase();
+  if (KEY_FORWARD.includes(key) || KEY_FORWARD.includes(event.key)) {
     pressForward = 1;
   }
-  if (KEY_BACK.includes(event.key)) {
+  if (KEY_BACK.includes(key) || KEY_BACK.includes(event.key)) {
     pressBack = 1;
   }
-  if (KEY_RIGHT.includes(event.key)) {
+  if (KEY_RIGHT.includes(key) || KEY_RIGHT.includes(event.key)) {
     pressRight = 1;
   }
-  if (KEY_LEFT.includes(event.key)) {
+  if (KEY_LEFT.includes(key) || KEY_LEFT.includes(event.key)) {
     pressLeft = 1;
   }
-  if (KEY_JUMP.includes(event.key)) {
-    pressUp = 1;
+  if (KEY_JUMP.includes(key) || (KEY_JUMP.includes(event.key) && !event.repeat)) {
+    pressJump = true;
   }
   if (KEY_SPRINT.includes(event.key)) {
     pressSprint = SPRINT_SPEED;
@@ -60,20 +82,21 @@ document.addEventListener("keydown", (event) => {
 
 // If the key is released
 document.addEventListener("keyup", (event) => {
-  if (KEY_FORWARD.includes(event.key)) {
+  const key = event.key.toLowerCase();
+  if (KEY_FORWARD.includes(key) || KEY_FORWARD.includes(event.key)) {
     pressForward = 0;
   }
-  if (KEY_BACK.includes(event.key)) {
+  if (KEY_BACK.includes(key) || KEY_BACK.includes(event.key)) {
     pressBack = 0;
   }
-  if (KEY_RIGHT.includes(event.key)) {
+  if (KEY_RIGHT.includes(key) || KEY_RIGHT.includes(event.key)) {
     pressRight = 0;
   }
-  if (KEY_LEFT.includes(event.key)) {
+  if (KEY_LEFT.includes(key) || KEY_LEFT.includes(event.key)) {
     pressLeft = 0;
   }
-  if (KEY_JUMP.includes(event.key)) {
-    pressUp = -GRAVITY;
+  if (KEY_JUMP.includes(key) || KEY_JUMP.includes(event.key)) {
+    pressJump = false;
   }
   if (KEY_SPRINT.includes(event.key)) {
     pressSprint = 1;
@@ -97,9 +120,21 @@ function update() {
     Math.sin(player.rotationY * DEG) * ((pressRight - pressLeft) * MOVE_SPEED * pressSprint) +
     Math.cos(player.rotationY * DEG) * ((pressForward - pressBack) * MOVE_SPEED * pressSprint)
   );
-  let differenceY = -pressUp * JUMP_SPEED;
   let differenceRotationX = mouseY;
   let differenceRotationY = -mouseX;
+
+  // Handle jumping - only jump when on ground
+  if (pressJump && isGrounded) {
+    verticalVelocity = -JUMP_SPEED;
+    isGrounded = false;
+    pressJump = false; // Consume the jump input
+  }
+
+  // Apply gravity
+  verticalVelocity += GRAVITY;
+
+  // Apply vertical velocity
+  let newY = player.y + verticalVelocity;
 
   // Calculate new position
   let newX = player.x + differenceX;
@@ -122,8 +157,17 @@ function update() {
     }
   }
 
-  // Apply vertical movement (no collision check for now)
-  player.y = Math.min(0, player.y + differenceY);
+  // Apply vertical movement with ground collision
+  if (newY >= 0) {
+    // Hit ground or below ground level
+    player.y = 0;
+    verticalVelocity = 0;
+    isGrounded = true;
+  } else {
+    // Still in air
+    player.y = newY;
+    isGrounded = false;
+  }
 
   // Rotate only when mouse is locked
   if (isMouseLocked) {
@@ -161,6 +205,18 @@ function createNewWorld() {
   createCubes(level1, "walls");
   createSquares(crystals, "crystal");
   createSquares(keys, "key");
+
+  // Initialize game state
+  totalCollectibles = crystals.length + keys.length;
+  collectedCount = 0;
+  gameStartTime = Date.now();
+  gameTimer = 0;
+  isGameActive = true;
+
+  // Show GUI and update displays
+  gameGUI.style.display = "block";
+  updateCollectiblesDisplay();
+  timerDisplay.textContent = "0:00";
 }
 
 function createSquares(squares, objectType) {
@@ -268,17 +324,63 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
       document.getElementById(elementPrefix + i).style.display = "none";
       collectibles[i].x = 999999;
 
+      // Increment collected count
+      collectedCount++;
+      updateCollectiblesDisplay();
+
       // Play pickup sound if it exists
       if (collectibles[i].sound) {
         const pickupSound = new Audio(collectibles[i].sound);
         pickupSound.play();
+      }
+
+      // Check win condition
+      if (collectedCount >= totalCollectibles) {
+        winSound.play();
+        showWinScreen();
       }
     }
   }
 }
 
 function repeatForever() {
+  if (!isGameActive) return;
+
   update();
   checkCollectibleCollision(crystals, "crystal");
   checkCollectibleCollision(keys, "key");
+  updateTimer();
+}
+
+function updateTimer() {
+  gameTimer = Date.now() - gameStartTime;
+  const seconds = Math.floor(gameTimer / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  timerDisplay.textContent = minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
+}
+
+function updateCollectiblesDisplay() {
+  const remaining = totalCollectibles - collectedCount;
+  collectiblesRemainingSpan.textContent = remaining;
+}
+
+function showWinScreen() {
+  isGameActive = false;
+  canLockMouse = false;
+
+  // Unlock mouse
+  if (document.pointerLockElement) {
+    document.exitPointerLock();
+  }
+
+  // Hide GUI and show win screen
+  gameGUI.style.display = "none";
+  winScreen.style.display = "block";
+
+  // Display completion time
+  const seconds = Math.floor(gameTimer / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  completionTimeDisplay.textContent = "Time: " + minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
 }
