@@ -13,6 +13,7 @@ let isGrounded = true;
 // Other
 const winSound = new Audio("sounds/win_screen.wav");
 winSound.load();
+winSound.volume = 0.4;
 
 // Variables for mouse
 let mouseX = 0;

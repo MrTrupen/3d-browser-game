@@ -12,6 +12,50 @@ let mainMenuBtn = document.getElementById("main-menu-btn");
 // Audio
 const clickSound = new Audio("sounds/gui_click.wav");
 clickSound.load();
+clickSound.volume = 0.4;
+
+const hoverSound = new Audio("sounds/gui_click.wav");
+hoverSound.load();
+hoverSound.volume = 0.1; // Lower volume for hover effect
+
+// Unlock audio on first user interaction
+let audioUnlocked = false;
+function unlockAudio() {
+  if (!audioUnlocked) {
+    hoverSound
+      .play()
+      .then(() => {
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+        audioUnlocked = true;
+      })
+      .catch(() => {
+        // Audio unlock failed, will try again
+      });
+  }
+}
+
+// Try to unlock audio on any mouse movement
+document.addEventListener("mousemove", unlockAudio, { once: true });
+document.addEventListener("click", unlockAudio, { once: true });
+
+// Add hover sound to all buttons
+function addHoverSound(button) {
+  button.addEventListener("mouseenter", function () {
+    hoverSound.currentTime = 0; // Reset to start for rapid hovers
+    hoverSound.play().catch(() => {}); // Catch any errors silently
+  });
+}
+
+// Apply hover sound to all menu buttons
+addHoverSound(startGameBtn);
+addHoverSound(instructionsBtn);
+addHoverSound(rulesBtn);
+addHoverSound(replayBtn);
+addHoverSound(mainMenuBtn);
+backBtns.forEach(function (btn) {
+  addHoverSound(btn);
+});
 
 // Start game button - hides menus and initializes game
 startGameBtn.onclick = function () {
