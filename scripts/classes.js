@@ -9,7 +9,7 @@ class Player {
 }
 
 class Rectangle {
-  constructor(x, y, z, rotationX, rotationY, rotationZ, width, height, patternPath) {
+  constructor(x, y, z, rotationX, rotationY, rotationZ, width, height, patternPath, sound = null) {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -19,5 +19,6 @@ class Rectangle {
     this.width = width;
     this.height = height;
     this.patternPath = patternPath;
+    this.sound = sound;
   }
 }

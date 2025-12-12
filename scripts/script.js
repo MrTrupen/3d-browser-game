@@ -138,7 +138,7 @@ function update() {
 function createNewWorld() {
   createSquares(boundaries, "boundaries");
   createSquares(generateMaze(10, 200), "walls");
-  createSquares(coins, "coin");
+  createSquares(crystals, "crystal");
   createSquares(keys, "key");
 }
 
@@ -175,44 +175,28 @@ function createSquares(squares, objectType) {
 }
 
 function rotateCollectibles() {
-  // Rotate all coins
-  for (let i = 0; i < coins.length; i++) {
-    let coinElement = document.getElementById("coin" + i);
-    if (coinElement) {
-      coinElement.style.transform =
-        "translate3d(" +
-        to_px(600 - coins[i].width / 2 + coins[i].x) +
-        "," +
-        to_px(400 - coins[i].height / 2 + coins[i].y) +
-        "," +
-        to_px(coins[i].z) +
-        ") rotateX(" +
-        coins[i].rotationX +
-        "deg) rotateY(" +
-        (coins[i].rotationY + collectibleRotation) +
-        "deg) rotateZ(" +
-        coins[i].rotationZ +
-        "deg)";
-    }
-  }
+  rotateCollectibleArray(crystals, "crystal");
+  rotateCollectibleArray(keys, "key");
+}
 
-  // Rotate all keys
-  for (let i = 0; i < keys.length; i++) {
-    let keyElement = document.getElementById("key" + i);
-    if (keyElement) {
-      keyElement.style.transform =
+function rotateCollectibleArray(collectibles, elementPrefix) {
+  for (let i = 0; i < collectibles.length; i++) {
+    const element = document.getElementById(elementPrefix + i);
+    if (element) {
+      const item = collectibles[i];
+      element.style.transform =
         "translate3d(" +
-        to_px(600 - keys[i].width / 2 + keys[i].x) +
+        to_px(600 - item.width / 2 + item.x) +
         "," +
-        to_px(400 - keys[i].height / 2 + keys[i].y) +
+        to_px(400 - item.height / 2 + item.y) +
         "," +
-        to_px(keys[i].z) +
+        to_px(item.z) +
         ") rotateX(" +
-        keys[i].rotationX +
+        item.rotationX +
         "deg) rotateY(" +
-        (keys[i].rotationY + collectibleRotation) +
+        (item.rotationY + collectibleRotation) +
         "deg) rotateZ(" +
-        keys[i].rotationZ +
+        item.rotationZ +
         "deg)";
     }
   }
@@ -220,18 +204,25 @@ function rotateCollectibles() {
 
 function checkCollectibleCollision(collectibles, elementPrefix) {
   for (let i = 0; i < collectibles.length; i++) {
-    let distanceSquared = (collectibles[i].x - player.x) ** 2 + (collectibles[i].y - player.y) ** 2 + (collectibles[i].z - player.z) ** 2;
+    let distanceSquared =
+      (collectibles[i].x - player.x) ** 2 + (collectibles[i].y - player.y) ** 2 + (collectibles[i].z - player.z) ** 2;
     let collisionRadiusSquared = collectibles[i].width ** 2;
 
     if (distanceSquared < collisionRadiusSquared) {
       document.getElementById(elementPrefix + i).style.display = "none";
       collectibles[i].x = 999999;
+
+      // Play pickup sound if it exists
+      if (collectibles[i].sound) {
+        const pickupSound = new Audio(collectibles[i].sound);
+        pickupSound.play();
+      }
     }
   }
 }
 
 function repeatForever() {
   update();
-  checkCollectibleCollision(coins, "coin");
+  checkCollectibleCollision(crystals, "crystal");
   checkCollectibleCollision(keys, "key");
 }

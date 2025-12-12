@@ -7,7 +7,7 @@
 function generateMaze(gridSize, cellSize) {
   const maze = [];
   const wallHeight = 200;
-  const texture = "url('Patterns/hedge.jpg')";
+  const texture = "url('sprites/wall.png')";
   const halfGrid = gridSize / 2;
   const halfCell = cellSize / 2;
 
