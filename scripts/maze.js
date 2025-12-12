@@ -67,5 +67,19 @@ function generateMazeCubes(gridSize, cellSize) {
     }
   }
 
+  // Log the generated maze
+  console.log("=== Generated Maze (copy this to world.js) ===");
+  console.log("let mazeWalls = [");
+  maze.forEach((cube, index) => {
+    const comma = index < maze.length - 1 ? "," : "";
+    console.log(
+      `  new Cube(${cube.x}, ${cube.y}, ${cube.z}, ${cube.rotationX}, ${cube.rotationY}, ${cube.rotationZ}, ${
+        cube.width
+      }, ${cube.height}, ${cube.depth}, "url(${cube.patternPath.replace(/^url\('|'\)$/g, "")})")${comma}`
+    );
+  });
+  console.log("];");
+  console.log("==============================================");
+
   return maze;
 }
