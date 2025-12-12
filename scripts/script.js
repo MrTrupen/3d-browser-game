@@ -101,10 +101,29 @@ function update() {
   let differenceRotationX = mouseY;
   let differenceRotationY = -mouseX;
 
-  // Add movement to the coordinates
-  player.x = player.x + differenceX;
+  // Calculate new position
+  let newX = player.x + differenceX;
+  let newZ = player.z + differenceZ;
+
+  // Combine all cubes for collision detection
+  const allWalls = [...boundaries, ...level1];
+
+  // Check collision with walls before applying movement
+  if (!wouldCollideWithWalls(newX, newZ, allWalls)) {
+    player.x = newX;
+    player.z = newZ;
+  } else {
+    // Try sliding along walls - check X and Z separately
+    if (!wouldCollideWithWalls(newX, player.z, allWalls)) {
+      player.x = newX;
+    }
+    if (!wouldCollideWithWalls(player.x, newZ, allWalls)) {
+      player.z = newZ;
+    }
+  }
+
+  // Apply vertical movement (no collision check for now)
   player.y = Math.min(0, player.y + differenceY);
-  player.z = player.z + differenceZ;
 
   // Rotate only when mouse is locked
   if (isMouseLocked) {
@@ -136,8 +155,10 @@ function update() {
 }
 
 function createNewWorld() {
-  createSquares(boundaries, "boundaries");
-  createSquares(generateMaze(10, 200), "walls");
+  createCubes(boundaries, "boundaries");
+  createSquares(groundAndCelling, "groundCelling");
+  // createCubes(generateMazeCubes(10, 200), "walls");
+  createCubes(level1, "walls");
   createSquares(crystals, "crystal");
   createSquares(keys, "key");
 }
@@ -171,6 +192,41 @@ function createSquares(squares, objectType) {
 
     // Insert rectangles into the world
     world.append(newElement);
+  }
+}
+
+function createCubes(cubes, objectType) {
+  for (let cubeIdx = 0; cubeIdx < cubes.length; cubeIdx++) {
+    const cube = cubes[cubeIdx];
+    const faces = cube.getFaces();
+
+    // Create each face of the cube
+    for (let faceIdx = 0; faceIdx < faces.length; faceIdx++) {
+      const face = faces[faceIdx];
+      let newElement = document.createElement("div");
+      newElement.className = objectType + " square";
+      newElement.id = objectType + cubeIdx + "_face" + faceIdx;
+      newElement.style.width = to_px(face.width);
+      newElement.style.height = to_px(face.height);
+      newElement.style.backgroundImage = face.patternPath;
+
+      newElement.style.transform =
+        "translate3d(" +
+        to_px(600 - face.width / 2 + face.x) +
+        "," +
+        to_px(400 - face.height / 2 + face.y) +
+        "," +
+        to_px(face.z) +
+        ") rotateX(" +
+        face.rotationX +
+        "deg) rotateY(" +
+        face.rotationY +
+        "deg) rotateZ(" +
+        face.rotationZ +
+        "deg)";
+
+      world.append(newElement);
+    }
   }
 }
 
