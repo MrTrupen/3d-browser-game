@@ -1,8 +1,11 @@
 let boundaries = [
-  new Rectangle(0, 0, -1000, 0, 0, 0, 2000, 200, "url('sprites/border_wall.png')"), // front walls
-  new Rectangle(0, 0, 1000, 0, 0, 0, 2000, 200, "url('sprites/border_wall.png')"), // back wall
-  new Rectangle(1000, 0, 0, 0, 90, 0, 2000, 200, "url('sprites/border_wall.png')"), // right wall
-  new Rectangle(-1000, 0, 0, 0, -90, 0, 2000, 200, "url('sprites/border_wall.png')"), // left wall
+  new Cube(0, 0, -1000, 0, 0, 0, 2000, 200, 20, "url('sprites/border_wall.png')"), // front wall
+  new Cube(0, 0, 1000, 0, 0, 0, 2000, 200, 20, "url('sprites/border_wall.png')"), // back wall
+  new Cube(1000, 0, 0, 0, 0, 0, 20, 200, 2000, "url('sprites/border_wall.png')"), // right wall
+  new Cube(-1000, 0, 0, 0, 0, 0, 20, 200, 2000, "url('sprites/border_wall.png')"), // left wall
+];
+
+let groundAndCelling = [
   new Rectangle(0, 100, 0, 90, 0, 0, 2000, 2000, "url('sprites/ground.png')"), // ground
   new Rectangle(0, -100, 0, 90, 0, 0, 2000, 2000, "url('sprites/ceiling_tile.png')"), // ceiling
 ];

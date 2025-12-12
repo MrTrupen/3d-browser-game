@@ -5,6 +5,8 @@ const SPRINT_SPEED = 2; // units per update for sprint multiplier
 const UPDATE_INTERVAL = 10; // ms between game updates
 const GRAVITY = 1;
 const MOUSE_SPEED = 0.4;
+const PLAYER_RADIUS = 30; // collision radius for the player
+const PLAYER_HEIGHT = 80; // player height for collision detection
 
 // Key binding constants
 const KEY_FORWARD = ["w", "ArrowUp"];
