@@ -47,11 +47,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  border: 3px solid #b86a47;
 }
 
 .button:hover {
   background-color: #ffaa5e;
   cursor: pointer;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  border-color: #e89050;
 }
 
 .back-btn {
@@ -72,4 +79,15 @@ body {
 #rules-btn {
   top: 500px;
   left: 150px;
+}
+
+.text-content {
+  position: absolute;
+  top: 50px;
+  left: 250px;
+  width: 600px;
+  padding: 40px;
+  background-color: rgba(208, 129, 89, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
