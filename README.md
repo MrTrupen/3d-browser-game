@@ -1,5 +1,10 @@
 # 3D Browser Game - Maze Explorer
 
+<p align="center">
+  <img src="photos/gameplay.png" width="400" alt="Gameplay Screenshot">
+  <img src="photos/maze.png" width="400" alt="Maze Screenshot">
+</p>
+
 A fully functional 3D maze game built from scratch using only HTML, CSS, and JavaScript - no external libraries or game engines required.
 
 This project was developed as part of a university course titled **"3D Game Creation for Browsers using HTML, CSS and JavaScript"** held in Liepaja, Latvia.
