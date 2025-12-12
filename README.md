@@ -26,3 +26,9 @@ This project was developed as part of a university course titled **"3D Game Crea
 1. Clone or download this repository
 2. Open `index.html` in your web browser
 3. Start exploring the maze!
+
+## Credits
+
+**Graphics**: All graphics provided by [Kenney](https://www.kenney.nl)
+
+**Sounds**: All sounds provided by [Pixabay](https://pixabay.com)
