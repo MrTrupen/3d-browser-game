@@ -36,6 +36,9 @@ let worlds = [level1, house_map, level2];
 let activeCrystals = [];
 let activeKeys = [];
 let activeHoles = [];
+let levelsCompleted = 0;
+let totalGameTime = 0;
+const LEVELS_TO_WIN = 3; // Number of levels to complete before final win screen
 
 // Variable for HTML objects
 const world = document.getElementById("world");
@@ -45,6 +48,8 @@ const collectiblesRemainingSpan = document.getElementById("collectibles-remainin
 const timerDisplay = document.getElementById("timer-display");
 const winScreen = document.getElementById("win-screen");
 const completionTimeDisplay = document.getElementById("completion-time");
+const finalWinScreen = document.getElementById("final-win-screen");
+const totalCompletionTimeDisplay = document.getElementById("total-completion-time");
 
 function cloneRectangles(rectangles) {
   return rectangles.map(
@@ -423,6 +428,16 @@ function resetPlayerState() {
 function goToNextLevel() {
   winSound.play();
 
+  // Add current level time to total
+  totalGameTime += gameTimer;
+  levelsCompleted++;
+
+  // Check if all levels are completed
+  if (levelsCompleted >= LEVELS_TO_WIN) {
+    showFinalWinScreen();
+    return;
+  }
+
   // Keep pointer lock active between level transitions.
   canLockMouse = true;
 
@@ -472,4 +487,32 @@ function showWinScreen() {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   completionTimeDisplay.textContent = "Time: " + minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
+}
+
+function showFinalWinScreen() {
+  isGameActive = false;
+  canLockMouse = false;
+
+  // Unlock mouse
+  if (document.pointerLockElement) {
+    document.exitPointerLock();
+  }
+
+  // Hide GUI and win screens, show final win screen
+  gameGUI.style.display = "none";
+  winScreen.style.display = "none";
+  finalWinScreen.style.display = "block";
+
+  // Display total completion time (hours:minutes:seconds)
+  const totalSeconds = Math.floor(totalGameTime / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  const timeFormat =
+    hours > 0
+      ? `${hours}:${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`
+      : `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+
+  totalCompletionTimeDisplay.textContent = timeFormat;
 }

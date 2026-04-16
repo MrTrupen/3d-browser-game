@@ -13,21 +13,21 @@ let groundAndCelling = [
 let crystalsByLevel = [
   [
     new Rectangle(0, 30, -100, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
-    new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
-    new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
-    new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+    // new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+    // new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+    // new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
   ],
   [
     new Rectangle(-120, 30, -550, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
-    new Rectangle(120, 30, -550, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
-    new Rectangle(0, 30, -350, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    // new Rectangle(120, 30, -550, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    // new Rectangle(0, 30, -350, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
   ],
   [
     new Rectangle(-500, 30, 0, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
-    new Rectangle(500, 30, -300, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
-    new Rectangle(-200, 30, 500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
-    new Rectangle(400, 30, 300, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
-    new Rectangle(0, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    // new Rectangle(500, 30, -300, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    // new Rectangle(-200, 30, 500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    // new Rectangle(400, 30, 300, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    // new Rectangle(0, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
   ],
 ];
 
