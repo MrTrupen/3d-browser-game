@@ -22,16 +22,25 @@ let crystalsByLevel = [
     new Rectangle(120, 30, -550, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
     new Rectangle(0, 30, -350, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
   ],
+  [
+    new Rectangle(-500, 30, 0, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    new Rectangle(500, 30, -300, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    new Rectangle(-200, 30, 500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    new Rectangle(400, 30, 300, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    new Rectangle(0, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+  ],
 ];
 
 let keysByLevel = [
   [new Rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav")], // key
   [new Rectangle(0, 30, -500, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav")],
+  [new Rectangle(-700, 30, 700, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav")],
 ];
 
 let holesByLevel = [
   [new Rectangle(0, 99, -100, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav")], // hole
   [new Rectangle(0, 99, -500, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav")],
+  [new Rectangle(0, 99, 0, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav")],
 ];
 
 let house_map = [
@@ -107,4 +116,47 @@ let level1 = [
   new Cube(900, 0, 800, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
   new Cube(0, 0, 900, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
   new Cube(400, 0, 900, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+];
+
+let level2 = [
+  // Outer perimeter markers
+  new Cube(-800, 0, -800, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(800, 0, -800, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(-800, 0, 800, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(800, 0, 800, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+
+  // Central cross pattern
+  new Cube(0, 0, -600, 0, 0, 0, 400, 200, 20, "url(sprites/wall.png)"),
+  new Cube(0, 0, 600, 0, 0, 0, 400, 200, 20, "url(sprites/wall.png)"),
+  new Cube(-600, 0, 0, 0, 0, 0, 20, 200, 400, "url(sprites/wall.png)"),
+  new Cube(600, 0, 0, 0, 0, 0, 20, 200, 400, "url(sprites/wall.png)"),
+
+  // Inner maze chambers
+  new Cube(-400, 0, -400, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(400, 0, -400, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(-400, 0, 400, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(400, 0, 400, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+
+  // Additional corridors
+  new Cube(-400, 0, 0, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+  new Cube(400, 0, 0, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+  new Cube(0, 0, -400, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(0, 0, 400, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+
+  // Side walls for navigation challenge
+  new Cube(-700, 0, -200, 0, 0, 0, 20, 200, 300, "url(sprites/wall.png)"),
+  new Cube(700, 0, -200, 0, 0, 0, 20, 200, 300, "url(sprites/wall.png)"),
+  new Cube(-700, 0, 200, 0, 0, 0, 20, 200, 300, "url(sprites/wall.png)"),
+  new Cube(700, 0, 200, 0, 0, 0, 20, 200, 300, "url(sprites/wall.png)"),
+
+  // Additional obstacles in quadrants
+  new Cube(-300, 0, -600, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+  new Cube(300, 0, -600, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+  new Cube(-300, 0, 600, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+  new Cube(300, 0, 600, 0, 0, 0, 20, 200, 200, "url(sprites/wall.png)"),
+
+  new Cube(-600, 0, -300, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(-600, 0, 300, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(600, 0, -300, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
+  new Cube(600, 0, 300, 0, 0, 0, 200, 200, 20, "url(sprites/wall.png)"),
 ];
