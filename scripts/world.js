@@ -10,19 +10,28 @@ let groundAndCelling = [
   new Rectangle(0, -100, 0, 90, 0, 0, 2000, 2000, "url('sprites/ceiling_tile.png')"), // ceiling
 ];
 
-let crystals = [
-  new Rectangle(0, 30, -100, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
-  new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
-  new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
-  new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+let crystalsByLevel = [
+  [
+    new Rectangle(0, 30, -100, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+    new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+    new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+    new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
+  ],
+  [
+    new Rectangle(-120, 30, -550, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    new Rectangle(120, 30, -550, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+    new Rectangle(0, 30, -350, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"),
+  ],
 ];
 
-let keys = [
-  new Rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav"), // key
+let keysByLevel = [
+  [new Rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav")], // key
+  [new Rectangle(0, 30, -500, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav")],
 ];
 
-let holes = [
-  new Rectangle(0, 99, -100, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav"), // hole
+let holesByLevel = [
+  [new Rectangle(0, 99, -100, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav")], // hole
+  [new Rectangle(0, 99, -500, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav")],
 ];
 
 let house_map = [

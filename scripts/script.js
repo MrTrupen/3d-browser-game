@@ -33,7 +33,9 @@ let gameTimer = 0;
 let isGameActive = false;
 let timerGame = null;
 let worlds = [level1, house_map];
-let collectiblesArray = [];
+let activeCrystals = [];
+let activeKeys = [];
+let activeHoles = [];
 
 // Variable for HTML objects
 const world = document.getElementById("world");
@@ -43,6 +45,24 @@ const collectiblesRemainingSpan = document.getElementById("collectibles-remainin
 const timerDisplay = document.getElementById("timer-display");
 const winScreen = document.getElementById("win-screen");
 const completionTimeDisplay = document.getElementById("completion-time");
+
+function cloneRectangles(rectangles) {
+  return rectangles.map(
+    (rectangle) =>
+      new Rectangle(
+        rectangle.x,
+        rectangle.y,
+        rectangle.z,
+        rectangle.rotationX,
+        rectangle.rotationY,
+        rectangle.rotationZ,
+        rectangle.width,
+        rectangle.height,
+        rectangle.patternPath,
+        rectangle.sound
+      )
+  );
+}
 
 // Mouse locking
 container.onclick = function () {
@@ -206,6 +226,13 @@ function update() {
 
 function createNewWorld() {
   const safeWorldIdx = worldIdx % worlds.length;
+  const levelCrystals = crystalsByLevel[safeWorldIdx] || [];
+  const levelKeys = keysByLevel[safeWorldIdx] || [];
+  const levelHoles = holesByLevel[safeWorldIdx] || [];
+
+  activeCrystals = cloneRectangles(levelCrystals);
+  activeKeys = cloneRectangles(levelKeys);
+  activeHoles = cloneRectangles(levelHoles);
 
   createCubes(boundaries, "boundaries");
   createSquares(groundAndCelling, "groundCelling");
@@ -213,12 +240,12 @@ function createNewWorld() {
   createCubes(worlds[safeWorldIdx], "walls");
   worldIdx = safeWorldIdx + 1;
 
-  createSquares(crystals, "crystal");
-  createSquares(keys, "key");
-  createSquares(holes, "holes");
+  createSquares(activeCrystals, "crystal");
+  createSquares(activeKeys, "key");
+  createSquares(activeHoles, "holes");
 
   // Initialize game state
-  totalCollectibles = crystals.length + keys.length;
+  totalCollectibles = activeCrystals.length + activeKeys.length;
   collectedCount = 0;
   gameStartTime = Date.now();
   gameTimer = 0;
@@ -305,8 +332,8 @@ function createCubes(cubes, objectType) {
 }
 
 function rotateCollectibles() {
-  rotateCollectibleArray(crystals, "crystal");
-  rotateCollectibleArray(keys, "key");
+  rotateCollectibleArray(activeCrystals, "crystal");
+  rotateCollectibleArray(activeKeys, "key");
 }
 
 function rotateCollectibleArray(collectibles, elementPrefix) {
@@ -365,8 +392,8 @@ function repeatForever() {
   if (!isGameActive) return;
 
   update();
-  checkCollectibleCollision(crystals, "crystal");
-  checkCollectibleCollision(keys, "key");
+  checkCollectibleCollision(activeCrystals, "crystal");
+  checkCollectibleCollision(activeKeys, "key");
   updateTimer();
 }
 
