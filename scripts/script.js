@@ -59,8 +59,8 @@ function cloneRectangles(rectangles) {
         rectangle.width,
         rectangle.height,
         rectangle.patternPath,
-        rectangle.sound
-      )
+        rectangle.sound,
+      ),
   );
 }
 
@@ -378,14 +378,57 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
         const pickupSound = new Audio(collectibles[i].sound);
         pickupSound.play();
       }
-
-      // Check win condition
-      if (collectedCount >= totalCollectibles) {
-        winSound.play();
-        showWinScreen();
-      }
     }
   }
+}
+
+function checkHoleCollision() {
+  // Holes can only be used after all required collectibles are picked up.
+  if (collectedCount < totalCollectibles) {
+    return;
+  }
+
+  for (let i = 0; i < activeHoles.length; i++) {
+    const hole = activeHoles[i];
+    const dx = hole.x - player.x;
+    const dz = hole.z - player.z;
+    const distanceSquared = dx * dx + dz * dz;
+    const triggerRadius = Math.max(hole.width, hole.height) * 0.5 + PLAYER_RADIUS;
+
+    if (distanceSquared < triggerRadius * triggerRadius) {
+      goToNextLevel();
+      return;
+    }
+  }
+}
+
+function resetPlayerState() {
+  player.x = 0;
+  player.y = 0;
+  player.z = 0;
+  player.rotationX = 0;
+  player.rotationY = 0;
+
+  verticalVelocity = 0;
+  isGrounded = true;
+  pressLeft = 0;
+  pressRight = 0;
+  pressForward = 0;
+  pressBack = 0;
+  pressJump = false;
+  pressSprint = 1;
+  collectibleRotation = 0;
+}
+
+function goToNextLevel() {
+  winSound.play();
+
+  // Keep pointer lock active between level transitions.
+  canLockMouse = true;
+
+  resetPlayerState();
+  world.innerHTML = "";
+  createNewWorld();
 }
 
 function repeatForever() {
@@ -394,6 +437,7 @@ function repeatForever() {
   update();
   checkCollectibleCollision(activeCrystals, "crystal");
   checkCollectibleCollision(activeKeys, "key");
+  checkHoleCollision();
   updateTimer();
 }
 
