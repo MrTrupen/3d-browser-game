@@ -25,11 +25,15 @@ let canLockMouse = false;
 let collectibleRotation = 0;
 
 // Game state variables
+let worldIdx = 0;
 let totalCollectibles = 0;
 let collectedCount = 0;
 let gameStartTime = 0;
 let gameTimer = 0;
 let isGameActive = false;
+let timerGame = null;
+let worlds = [level1, house_map];
+let collectiblesArray = [];
 
 // Variable for HTML objects
 const world = document.getElementById("world");
@@ -140,8 +144,10 @@ function update() {
   let newX = player.x + differenceX;
   let newZ = player.z + differenceZ;
 
-  // Combine all cubes for collision detection
-  const allWalls = [...boundaries, ...level1];
+  // Combine all cubes for collision detection using the currently loaded world
+  const activeWorldIdx = (worldIdx - 1 + worlds.length) % worlds.length;
+  let allWalls = [...boundaries, ...worlds[activeWorldIdx]];
+  // const allWalls = level1;
 
   // Check collision with walls before applying movement
   if (!wouldCollideWithWalls(newX, newZ, allWalls)) {
@@ -199,12 +205,17 @@ function update() {
 }
 
 function createNewWorld() {
+  const safeWorldIdx = worldIdx % worlds.length;
+
   createCubes(boundaries, "boundaries");
   createSquares(groundAndCelling, "groundCelling");
   // createCubes(generateMazeCubes(10, 200), "walls");
-  createCubes(level1, "walls");
+  createCubes(worlds[safeWorldIdx], "walls");
+  worldIdx = safeWorldIdx + 1;
+
   createSquares(crystals, "crystal");
   createSquares(keys, "key");
+  createSquares(holes, "holes");
 
   // Initialize game state
   totalCollectibles = crystals.length + keys.length;
@@ -217,6 +228,13 @@ function createNewWorld() {
   gameGUI.style.display = "block";
   updateCollectiblesDisplay();
   timerDisplay.textContent = "0:00";
+}
+
+function startGameLoop() {
+  if (timerGame) {
+    clearInterval(timerGame);
+  }
+  timerGame = setInterval(repeatForever, UPDATE_INTERVAL);
 }
 
 function createSquares(squares, objectType) {

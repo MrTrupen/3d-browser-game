@@ -71,7 +71,7 @@ startGameBtn.onclick = function () {
   world.innerHTML = "";
 
   createNewWorld();
-  TimerGame = setInterval(repeatForever, UPDATE_INTERVAL);
+  startGameLoop();
 };
 
 // Instructions button - shows instructions menu
@@ -104,7 +104,19 @@ rulesBtn.onclick = function () {
 replayBtn.onclick = function () {
   // TODO: make a valid level restart logic
   clickSound.play();
-  location.reload();
+
+  mainMenu.style.display = "none";
+  instructionsMenu.style.display = "none";
+  rulesMenu.style.display = "none";
+  document.getElementById("win-screen").style.display = "none";
+
+  canLockMouse = true;
+
+  // Clear the world before creating new one
+  world.innerHTML = "";
+
+  createNewWorld();
+  startGameLoop();
 };
 
 // Main Menu button - returns to main menu from win screen

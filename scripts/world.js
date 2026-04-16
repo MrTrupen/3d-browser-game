@@ -11,6 +11,7 @@ let groundAndCelling = [
 ];
 
 let crystals = [
+  new Rectangle(0, 30, -100, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
   new Rectangle(300, 30, -500, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
   new Rectangle(-300, 30, 800, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
   new Rectangle(-100, 30, -200, 0, 0, 0, 50, 50, "url('sprites/crystal.png')", "sounds/coin_pickup.wav"), // crystal
@@ -18,6 +19,18 @@ let crystals = [
 
 let keys = [
   new Rectangle(900, 30, 900, 0, 0, 0, 50, 50, "url('sprites/key.png')", "sounds/coin_pickup.wav"), // key
+];
+
+let holes = [
+  new Rectangle(0, 99, -100, 90, 0, 0, 56, 56, "url('sprites/hole.png')", "sounds/coin_pickup.wav"), // hole
+];
+
+let house_map = [
+  new Cube(0, 0, -600, 0, 0, 0, 300, 200, 20, "url(sprites/wall.png)"), // back wall
+  new Cube(100, 0, -400, 0, 0, 0, 100, 200, 20, "url(sprites/wall.png)"), // right entrance
+  new Cube(-100, 0, -400, 0, 0, 0, 100, 200, 20, "url(sprites/wall.png)"), // left entrance
+  new Cube(-150, 0, -500, 0, 0, 0, 20, 200, 220, "url(sprites/wall.png)"), // left wall
+  new Cube(150, 0, -500, 0, 0, 0, 20, 200, 220, "url(sprites/wall.png)"), // right wall
 ];
 
 let level1 = [
