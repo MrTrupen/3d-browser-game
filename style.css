@@ -128,3 +128,33 @@ body {
 #main-menu-btn {
   width: 400px;
 }
+
+/* Pickup Notification */
+.pickup-notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(32, 60, 86, 0.95);
+  color: #ffaa5e;
+  padding: 30px 50px;
+  border-radius: 15px;
+  border: 3px solid #d08159;
+  font-size: 32px;
+  text-align: center;
+  z-index: 2000;
+  display: none;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}

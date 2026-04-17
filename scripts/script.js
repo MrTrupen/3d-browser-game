@@ -25,11 +25,45 @@ let canLockMouse = false;
 let collectibleRotation = 0;
 
 // Game state variables
+let worldIdx = 0;
 let totalCollectibles = 0;
 let collectedCount = 0;
+
+// Notification timeout ID (to clear previous timeout if notification is called again)
+let notificationTimeoutId = null;
+
+// Function to show pickup notification
+function showPickupNotification(message = "You've picked an item!") {
+  const notification = document.getElementById("pickup-notification");
+  const notificationText = document.getElementById("notification-text");
+
+  // Update the notification text
+  notificationText.textContent = message;
+
+  // Clear any previous timeout
+  if (notificationTimeoutId) {
+    clearTimeout(notificationTimeoutId);
+  }
+
+  // Show the notification
+  notification.style.display = "block";
+
+  // Hide the notification after 3 seconds
+  notificationTimeoutId = setTimeout(() => {
+    notification.style.display = "none";
+  }, 3000);
+}
 let gameStartTime = 0;
 let gameTimer = 0;
 let isGameActive = false;
+let timerGame = null;
+let worlds = [level1, house_map, level2];
+let activeCrystals = [];
+let activeKeys = [];
+let activeHoles = [];
+let levelsCompleted = 0;
+let totalGameTime = 0;
+const LEVELS_TO_WIN = 3; // Number of levels to complete before final win screen
 
 // Variable for HTML objects
 const world = document.getElementById("world");
@@ -39,6 +73,26 @@ const collectiblesRemainingSpan = document.getElementById("collectibles-remainin
 const timerDisplay = document.getElementById("timer-display");
 const winScreen = document.getElementById("win-screen");
 const completionTimeDisplay = document.getElementById("completion-time");
+const finalWinScreen = document.getElementById("final-win-screen");
+const totalCompletionTimeDisplay = document.getElementById("total-completion-time");
+
+function cloneRectangles(rectangles) {
+  return rectangles.map(
+    (rectangle) =>
+      new Rectangle(
+        rectangle.x,
+        rectangle.y,
+        rectangle.z,
+        rectangle.rotationX,
+        rectangle.rotationY,
+        rectangle.rotationZ,
+        rectangle.width,
+        rectangle.height,
+        rectangle.patternPath,
+        rectangle.sound,
+      ),
+  );
+}
 
 // Mouse locking
 container.onclick = function () {
@@ -140,8 +194,10 @@ function update() {
   let newX = player.x + differenceX;
   let newZ = player.z + differenceZ;
 
-  // Combine all cubes for collision detection
-  const allWalls = [...boundaries, ...level1];
+  // Combine all cubes for collision detection using the currently loaded world
+  const activeWorldIdx = (worldIdx - 1 + worlds.length) % worlds.length;
+  let allWalls = [...boundaries, ...worlds[activeWorldIdx]];
+  // const allWalls = level1;
 
   // Check collision with walls before applying movement
   if (!wouldCollideWithWalls(newX, newZ, allWalls)) {
@@ -199,15 +255,27 @@ function update() {
 }
 
 function createNewWorld() {
+  const safeWorldIdx = worldIdx % worlds.length;
+  const levelCrystals = crystalsByLevel[safeWorldIdx] || [];
+  const levelKeys = keysByLevel[safeWorldIdx] || [];
+  const levelHoles = holesByLevel[safeWorldIdx] || [];
+
+  activeCrystals = cloneRectangles(levelCrystals);
+  activeKeys = cloneRectangles(levelKeys);
+  activeHoles = cloneRectangles(levelHoles);
+
   createCubes(boundaries, "boundaries");
   createSquares(groundAndCelling, "groundCelling");
   // createCubes(generateMazeCubes(10, 200), "walls");
-  createCubes(level1, "walls");
-  createSquares(crystals, "crystal");
-  createSquares(keys, "key");
+  createCubes(worlds[safeWorldIdx], "walls");
+  worldIdx = safeWorldIdx + 1;
+
+  createSquares(activeCrystals, "crystal");
+  createSquares(activeKeys, "key");
+  createSquares(activeHoles, "holes");
 
   // Initialize game state
-  totalCollectibles = crystals.length + keys.length;
+  totalCollectibles = activeCrystals.length + activeKeys.length;
   collectedCount = 0;
   gameStartTime = Date.now();
   gameTimer = 0;
@@ -217,6 +285,13 @@ function createNewWorld() {
   gameGUI.style.display = "block";
   updateCollectiblesDisplay();
   timerDisplay.textContent = "0:00";
+}
+
+function startGameLoop() {
+  if (timerGame) {
+    clearInterval(timerGame);
+  }
+  timerGame = setInterval(repeatForever, UPDATE_INTERVAL);
 }
 
 function createSquares(squares, objectType) {
@@ -287,8 +362,8 @@ function createCubes(cubes, objectType) {
 }
 
 function rotateCollectibles() {
-  rotateCollectibleArray(crystals, "crystal");
-  rotateCollectibleArray(keys, "key");
+  rotateCollectibleArray(activeCrystals, "crystal");
+  rotateCollectibleArray(activeKeys, "key");
 }
 
 function rotateCollectibleArray(collectibles, elementPrefix) {
@@ -334,21 +409,78 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
         pickupSound.play();
       }
 
-      // Check win condition
-      if (collectedCount >= totalCollectibles) {
-        winSound.play();
-        showWinScreen();
-      }
+      // Show pickup notification
+      showPickupNotification("You've picked an item!");
     }
   }
+}
+
+function checkHoleCollision() {
+  // Holes can only be used after all required collectibles are picked up.
+  if (collectedCount < totalCollectibles) {
+    return;
+  }
+
+  for (let i = 0; i < activeHoles.length; i++) {
+    const hole = activeHoles[i];
+    const dx = hole.x - player.x;
+    const dz = hole.z - player.z;
+    const distanceSquared = dx * dx + dz * dz;
+    const triggerRadius = Math.max(hole.width, hole.height) * 0.5 + PLAYER_RADIUS;
+
+    if (distanceSquared < triggerRadius * triggerRadius) {
+      goToNextLevel();
+      return;
+    }
+  }
+}
+
+function resetPlayerState() {
+  player.x = 0;
+  player.y = 0;
+  player.z = 0;
+  player.rotationX = 0;
+  player.rotationY = 0;
+
+  verticalVelocity = 0;
+  isGrounded = true;
+  pressLeft = 0;
+  pressRight = 0;
+  pressForward = 0;
+  pressBack = 0;
+  pressJump = false;
+  pressSprint = 1;
+  collectibleRotation = 0;
+}
+
+function goToNextLevel() {
+  winSound.play();
+
+  // Add current level time to total
+  totalGameTime += gameTimer;
+  levelsCompleted++;
+
+  // Check if all levels are completed
+  if (levelsCompleted >= LEVELS_TO_WIN) {
+    showFinalWinScreen();
+    return;
+  }
+
+  // Keep pointer lock active between level transitions.
+  canLockMouse = true;
+
+  resetPlayerState();
+  world.innerHTML = "";
+  createNewWorld();
 }
 
 function repeatForever() {
   if (!isGameActive) return;
 
   update();
-  checkCollectibleCollision(crystals, "crystal");
-  checkCollectibleCollision(keys, "key");
+  checkCollectibleCollision(activeCrystals, "crystal");
+  checkCollectibleCollision(activeKeys, "key");
+  checkHoleCollision();
   updateTimer();
 }
 
@@ -383,4 +515,32 @@ function showWinScreen() {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   completionTimeDisplay.textContent = "Time: " + minutes + ":" + (remainingSeconds < 10 ? "0" : "") + remainingSeconds;
+}
+
+function showFinalWinScreen() {
+  isGameActive = false;
+  canLockMouse = false;
+
+  // Unlock mouse
+  if (document.pointerLockElement) {
+    document.exitPointerLock();
+  }
+
+  // Hide GUI and win screens, show final win screen
+  gameGUI.style.display = "none";
+  winScreen.style.display = "none";
+  finalWinScreen.style.display = "block";
+
+  // Display total completion time (hours:minutes:seconds)
+  const totalSeconds = Math.floor(totalGameTime / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const remainingSeconds = totalSeconds % 60;
+
+  const timeFormat =
+    hours > 0
+      ? `${hours}:${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`
+      : `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+
+  totalCompletionTimeDisplay.textContent = timeFormat;
 }

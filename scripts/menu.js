@@ -8,6 +8,8 @@ let rulesBtn = document.getElementById("rules-btn");
 let backBtns = document.querySelectorAll(".back-btn");
 let replayBtn = document.getElementById("replay-btn");
 let mainMenuBtn = document.getElementById("main-menu-btn");
+let finalReplayBtn = document.getElementById("final-replay-btn");
+let finalMenuBtn = document.getElementById("final-menu-btn");
 
 // Audio
 const clickSound = new Audio("sounds/gui_click.wav");
@@ -53,6 +55,8 @@ addHoverSound(instructionsBtn);
 addHoverSound(rulesBtn);
 addHoverSound(replayBtn);
 addHoverSound(mainMenuBtn);
+addHoverSound(finalReplayBtn);
+addHoverSound(finalMenuBtn);
 backBtns.forEach(function (btn) {
   addHoverSound(btn);
 });
@@ -64,6 +68,13 @@ startGameBtn.onclick = function () {
   instructionsMenu.style.display = "none";
   rulesMenu.style.display = "none";
   document.getElementById("win-screen").style.display = "none";
+  document.getElementById("final-win-screen").style.display = "none";
+
+  // Reset game state
+  levelsCompleted = 0;
+  totalGameTime = 0;
+  worldIdx = 0;
+  collectedCount = 0;
 
   canLockMouse = true;
 
@@ -71,7 +82,7 @@ startGameBtn.onclick = function () {
   world.innerHTML = "";
 
   createNewWorld();
-  TimerGame = setInterval(repeatForever, UPDATE_INTERVAL);
+  startGameLoop();
 };
 
 // Instructions button - shows instructions menu
@@ -104,11 +115,58 @@ rulesBtn.onclick = function () {
 replayBtn.onclick = function () {
   // TODO: make a valid level restart logic
   clickSound.play();
-  location.reload();
+
+  mainMenu.style.display = "none";
+  instructionsMenu.style.display = "none";
+  rulesMenu.style.display = "none";
+  document.getElementById("win-screen").style.display = "none";
+  document.getElementById("final-win-screen").style.display = "none";
+
+  // Reset game state for level restart (don't reset levelsCompleted/totalGameTime)
+  collectedCount = 0;
+
+  canLockMouse = true;
+
+  // Clear the world before creating new one
+  world.innerHTML = "";
+
+  createNewWorld();
+  startGameLoop();
 };
 
 // Main Menu button - returns to main menu from win screen
 mainMenuBtn.onclick = function () {
+  clickSound.play();
+  location.reload();
+};
+
+// Final Replay button - restarts from beginning after beating all levels
+finalReplayBtn.onclick = function () {
+  clickSound.play();
+
+  mainMenu.style.display = "none";
+  instructionsMenu.style.display = "none";
+  rulesMenu.style.display = "none";
+  document.getElementById("win-screen").style.display = "none";
+  document.getElementById("final-win-screen").style.display = "none";
+
+  // Reset game state
+  levelsCompleted = 0;
+  totalGameTime = 0;
+  worldIdx = 0;
+  collectedCount = 0;
+
+  canLockMouse = true;
+
+  // Clear the world before creating new one
+  world.innerHTML = "";
+
+  createNewWorld();
+  startGameLoop();
+};
+
+// Final Menu button - returns to main menu from final win screen
+finalMenuBtn.onclick = function () {
   clickSound.play();
   location.reload();
 };
