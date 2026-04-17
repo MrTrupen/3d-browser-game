@@ -28,6 +28,31 @@ let collectibleRotation = 0;
 let worldIdx = 0;
 let totalCollectibles = 0;
 let collectedCount = 0;
+
+// Notification timeout ID (to clear previous timeout if notification is called again)
+let notificationTimeoutId = null;
+
+// Function to show pickup notification
+function showPickupNotification(message = "You've picked a coin!") {
+  const notification = document.getElementById("pickup-notification");
+  const notificationText = document.getElementById("notification-text");
+
+  // Update the notification text
+  notificationText.textContent = message;
+
+  // Clear any previous timeout
+  if (notificationTimeoutId) {
+    clearTimeout(notificationTimeoutId);
+  }
+
+  // Show the notification
+  notification.style.display = "block";
+
+  // Hide the notification after 3 seconds
+  notificationTimeoutId = setTimeout(() => {
+    notification.style.display = "none";
+  }, 3000);
+}
 let gameStartTime = 0;
 let gameTimer = 0;
 let isGameActive = false;
@@ -383,6 +408,9 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
         const pickupSound = new Audio(collectibles[i].sound);
         pickupSound.play();
       }
+
+      // Show pickup notification
+      showPickupNotification("You've picked a coin!");
     }
   }
 }
