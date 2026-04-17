@@ -33,7 +33,7 @@ let collectedCount = 0;
 let notificationTimeoutId = null;
 
 // Function to show pickup notification
-function showPickupNotification(message = "You've picked a coin!") {
+function showPickupNotification(message = "You've picked an item!") {
   const notification = document.getElementById("pickup-notification");
   const notificationText = document.getElementById("notification-text");
 
@@ -410,7 +410,7 @@ function checkCollectibleCollision(collectibles, elementPrefix) {
       }
 
       // Show pickup notification
-      showPickupNotification("You've picked a coin!");
+      showPickupNotification("You've picked an item!");
     }
   }
 }
